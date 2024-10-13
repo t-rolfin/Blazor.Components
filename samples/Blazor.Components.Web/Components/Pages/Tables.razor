@@ -1,0 +1,46 @@
+﻿@page "/tables"
+
+@using Rolfin.Blazor.Components.Buttons
+@using Rolfin.Blazor.Components.Table
+
+<ActionBar Title="Tables">
+    <AddButton style="font-weight: 800" Text="Add" />
+    <DiscardButton Text="Discard" />
+    <ApproveButton Text="Approve" />
+</ActionBar>
+
+<RTable Values="_rows" >
+
+    <RTableColumn Width="80px">
+        <TableAction Color="danger" />
+        <TableAction Color="primary" />
+        <TableAction Color="warning" />
+    </RTableColumn>
+
+    <RTableColumn ColumnName="Name" ValueMap="x => x.Name"/>
+    <RTableColumn ColumnName="Country" ValueMap="x => x.Country"/>
+    <RTableColumn ColumnName="Age" ValueMap="x => x.Age"/>
+    <RTableColumn ColumnName="Birthday" ValueMap="x => x.Birthday"/>
+
+</RTable>
+
+@code {
+    List<TableRow> _rows = new()
+    {
+        new TableRow("Florin", "Romania", 28, new()),
+        new TableRow("Adelina", "Romania", 27, new()),
+        new TableRow("Catalin", "Romania", 22, new())
+    };
+
+
+    class TableRow
+    {
+        public TableRow(string name, string country, int age, DateTime birthday)
+            => (Name, Country, Age, Birthday) = (name, country, age, birthday);
+
+        public string? Name { get; set; }
+        public string? Country { get; set; }
+        public int Age { get; set; }
+        public DateTime Birthday { get; set; }
+    }
+}
