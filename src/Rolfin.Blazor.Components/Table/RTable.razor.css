@@ -1,4 +1,34 @@
-﻿.search-container
+﻿table {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+    caption-side: bottom;
+    vertical-align: top;
+    color: var(--table-text-color);
+    text-align: left;
+}
+
+thead > tr {
+    background-color: var(--table-header-color);
+}
+
+::deep thead > tr > th {
+    padding: 0.5rem 1px !important;
+    font-size: 18px;
+}
+
+tbody > tr:nth-child(odd) {
+    background-color: var(--table-row-color)
+}
+
+::deep tbody > tr > th {
+    padding: 0.5rem 1px !important;
+    vertical-align: middle;
+}
+
+
+
+.search-container
 {
     width: 50%;
     padding: 10px 0px;
@@ -20,41 +50,41 @@
     cursor: pointer;
 }
 
-.page-control-container > input{
-    border:none;
+.page-control-container > input {
+    border: none;
     background-color: transparent;
 }
 
-.page-control-container{
+.page-control-container {
     width: 50%;
     align-items: center;
     justify-content: end;
 }
 
-.items-on-page-container{
+.items-on-page-container {
     display: flex;
     flex-direction: row;
     align-items: center;
     width: 50%;
 }
 
-.items-on-page-container > span{
+.items-on-page-container > span {
     margin-right: 5px;
 }
 
-.items-on-page-container > select{
+.items-on-page-container > select {
     border: none;
     background-color: transparent;
     font-weight: 700;
 }
 
-.header-container{
+.header-container {
     display: flex;
     flex-direction: row;
     width: 100%;
     min-height: 48.5px;
 }
 
-.table-footer-info{
+.table-footer-info {
     width: 50%;
 }

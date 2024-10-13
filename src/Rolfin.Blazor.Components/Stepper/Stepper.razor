@@ -31,7 +31,7 @@
 
             <EditForm Model=@Model>
 
-                <FluentFormValidator T="T" @ref=Validator />
+                <FluentFormValidator TModel="T" @ref=_validator />
 
                 @Steps
 
@@ -68,13 +68,12 @@
     internal Step<T> CurrentStep { get; set; }
     internal StepperNextAction<T> nextButton { get; set; }
 
-    FluentFormValidator<T> Validator { get; set; }
+    FluentFormValidator<T> _validator { get; set; }
     int stepLineWidth { get; set; }
 
 
-    public bool ValidateFields(ValidationStrategy<T> strategy) => this.Validator.Validate(strategy);
-    public bool ValidateFields(T model, Action<IValidationBuilder<T>> validationBuilder)
-        => this.Validator.Validate(ValidationStrategy.Create(model, validationBuilder));
+    public bool ValidateFields(RulesBuilder<T> builder) => this._validator.ChangeRules(builder).Validate();
+
 
     public async Task Next()
     {

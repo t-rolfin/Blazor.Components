@@ -58,13 +58,13 @@
     [Parameter] public EventCallback<FileDetails> OnFileDeleted { get; set; }
     [Parameter] public EventCallback<List<FileDetails>> FilesChanged { get; set; }
 
-    [Parameter] public EventCallback<(ValidationError, string)> OnInvalid { get; set; }
+    [Parameter] public EventCallback<(ValidationErrorEnum, string)> OnInvalid { get; set; }
 
     async Task AddFiles(List<FileDetails> files)
     {
         if(AllowMultiple is false && Files?.Any(x => x.FileState is not FileState.Removed) is true)
         {
-            await OnInvalid.InvokeAsync((ValidationError.MultipleFiles, "Multiple files are not allowed."));
+            await OnInvalid.InvokeAsync((ValidationErrorEnum.MultipleFiles, "Multiple files are not allowed."));
             return;
         }
 

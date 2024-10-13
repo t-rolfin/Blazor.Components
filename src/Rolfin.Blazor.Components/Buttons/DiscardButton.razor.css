@@ -1,16 +1,20 @@
 ﻿.btn-discard {
-    border: 1px solid #ff6a00;
+    border: 1px solid var( --button-danger-border-color);
     background-color: white;
     display: flex;
     align-items: center;
-    color: #ff6a00;
+    color: var( --button-danger-text-color);
     padding: 3px 10px 3px 10px;
     min-width: 150px;
     justify-content: space-around;
 }
 
+.btn-discard:hover {
+    color: var(--button-danger-text-color);
+}
+
 .btn-discard > i {
-    color: #ff6a00;
+    color: var(--button-danger-text-color);
     padding-right: 5px;
     display: flex;
 }

@@ -1,6 +1,6 @@
 ﻿namespace Rolfin.Blazor.Components.Enums;
 
-public enum ValidationError
+public enum ValidationErrorEnum
 {
     InvalidExtension,
     MultipleFiles

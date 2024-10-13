@@ -1,19 +1,20 @@
 ﻿<CascadingValue Value="this" Name="_tab">
 
-    @if(_tabs.Any() is false)
-    {
-
-    }
-    else
+    @if(_tabs.Any() is true)
     {
         <div class="tabs-header">
+
                 @foreach (var tab in _tabs)
                 {
                     <div class="tab-header @(_currentTab.Id == tab.Id ? "active": "")" @onclick=@(() => ChangeTab(tab))>@tab.Name</div>
                 }
+
         </div>
+
         <div class="tabs-content" >
+
             @_currentTab.ChildContent
+
         </div>
     }
 

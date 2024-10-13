@@ -4,7 +4,8 @@
 </button>
 
 @code {
-    [Parameter] public string Text { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? Attributes { get; set; }
+
+    [Parameter] public string Text { get; set; } = string.Empty;
     [Parameter] public EventCallback onClick { get; set; }
-    [Parameter] public Dictionary<string, object> Attributes { get; set; }
 }

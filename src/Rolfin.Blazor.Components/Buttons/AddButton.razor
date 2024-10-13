@@ -1,15 +1,16 @@
-﻿<button type="button" class="btn btn-add" 
-    @onclick=@(async () => await onClick.InvokeAsync()) 
-    @attributes=Attributes
-    disabled="@(Disabled?.Invoke())">
-    <i class="bi bi-plus-lg"></i>
-    @*<span>@Text</span>*@
+﻿<button type="button" class="btn btn-add" @onclick=@(async () => await onClick.InvokeAsync()) 
+    @attributes=Attributes disabled="@(Disabled?.Invoke())">
+
+    @if (string.IsNullOrWhiteSpace(CssIcon) is false) { <i class="@CssIcon"></i> }
+    @if (string.IsNullOrWhiteSpace(Text) is false) { <span>@Text</span> }
+
 </button>
 
 @code {
-    [Parameter] public string Text { get; set; }
-    [Parameter] public EventCallback onClick { get; set; }
-    [Parameter] public Dictionary<string, object> Attributes { get; set; }
-    [Parameter] public Func<bool> Disabled { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? Attributes { get; set; }
 
+    [Parameter] public string CssIcon { get; set; } = string.Empty;
+    [Parameter] public string Text { get; set; } = string.Empty;
+    [Parameter] public EventCallback onClick { get; set; }
+    [Parameter] public Func<bool>? Disabled { get; set; }
 }

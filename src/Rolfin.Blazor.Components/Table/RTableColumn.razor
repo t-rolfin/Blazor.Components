@@ -3,16 +3,16 @@
 
 @if (Item is null)
 {
-    <th style="width: @Width" >@ColumnName</th>
+    <th style="@(string.IsNullOrWhiteSpace(Width) is false ? $"width: {Width}" : "")">@ColumnName</th>
 }
 else if (ValueMap is not null)
 {
     var value = ValueMap(Item);
-    <th style="vertical-align:middle" scope="row">@value?.ToString()</th>
+    <th scope="row">@value?.ToString()</th>
 }
 else
 {
-    <th style="vertical-align:middle" scope="row">
+    <th scope="row">
         <CascadingValue Value=@Item>
             @ChildContent?.Invoke(Item)
         </CascadingValue>

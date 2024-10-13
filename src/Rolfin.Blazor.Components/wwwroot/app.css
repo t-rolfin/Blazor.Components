@@ -1,0 +1,26 @@
+﻿:root {
+    --main-bg-color: #f1f1f1;
+    --border-color: #e9ecef;
+
+    --button-primary-color: #1b6ec2;
+    --button-text-color: #ffffff;
+    --button-danger-color: #dc3545;
+    --button-danger-border-color: #ff6a00;
+    --button-danger-text-color: #ff6a00;
+    --button-text-color-hover: #ffffff;
+
+    --warning-color: #fcba03;
+    --table-header-color: rgba(0, 0, 0, 0.1);
+    --table-row-color: rgba(0, 0, 0, 0.05);
+    --table-text-color: #212529;
+}
+
+
+*{
+    box-sizing: border-box;
+}
+
+
+.btn:hover{
+    cursor: pointer;
+}

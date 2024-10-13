@@ -1,24 +1,31 @@
 ﻿@typeparam T
 
-@if (_stepper.CurrentStep?.IsLastStep == true)
+@if (_stepper?.CurrentStep?.IsLastStep == true)
 {
-    <SaveButton Disabled=@(!_stepper.IsValid) onClick=@(async () => await _stepper.Next()) Text=@TextOnLastStep />
+    <SaveButton Disabled=@(() => !_stepper.IsValid) onClick=@(async () => await _stepper.Next()) Text=@TextOnLastStep />
 }
 else
 {
-    <NextButton onClick=@(async () => await _stepper.Next()) Text=@Text />
+    <NextButton onClick=@(async () => await _stepper?.Next()!) Text=@Text />
 }
 
 @code {
-    [CascadingParameter] public Stepper<T> _stepper { get; set; }
+    [CascadingParameter] public Stepper<T>? _stepper { get; set; }
 
-    [Parameter] public string Text { get; set; }
-    [Parameter] public string TextOnLastStep { get; set; }
+    [Parameter] public string Text { get; set; } = string.Empty;
+    [Parameter] public string TextOnLastStep { get; set; } = string.Empty;
+
 
     protected override void OnInitialized()
     {
-        _stepper.nextButton = this;
+        if(_stepper is not null) _stepper.nextButton = this;
         base.OnInitialized();
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        if (_stepper is null) throw new ArgumentNullException($"{nameof(StepperNextAction<T>)} must be used only inside a Stepper component.");
     }
 
     internal void Refresh() => StateHasChanged();

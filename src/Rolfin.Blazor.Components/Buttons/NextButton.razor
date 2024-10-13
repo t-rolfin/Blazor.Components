@@ -1,9 +1,14 @@
-﻿<button type="button" class="btn btn-next" @onclick=@(async () => await onClick.InvokeAsync())>
-    <i class="bi bi-arrow-right"></i>
-    <span>@Text</span>
+﻿<button type="button" class="btn btn-next" @attributes=Attributes @onclick=@(async () => await onClick.InvokeAsync())>
+
+    @if(string.IsNullOrWhiteSpace(CssIcon)) { <i class="@CssIcon"></i> }
+    @if(string.IsNullOrWhiteSpace(Text)) { <span>@Text</span> }
+
 </button>
 
 @code {
-    [Parameter] public string Text { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? Attributes { get; set; }
+
+    [Parameter] public string CssIcon { get; set; } = string.Empty;
+    [Parameter] public string Text { get; set; } = string.Empty;
     [Parameter] public EventCallback onClick { get; set; }
 }

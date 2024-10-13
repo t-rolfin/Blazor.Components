@@ -18,7 +18,7 @@
     [Parameter] public RenderFragment ChildContent { get; set; }
 
     [Parameter] public EventCallback<List<FileDetails>> OnFilesAdded { get; set; }
-    [Parameter] public EventCallback<(ValidationError ValidationError, string FileName)> OnInvalid { get; set; }
+    [Parameter] public EventCallback<(ValidationErrorEnum ValidationError, string FileName)> OnInvalid { get; set; }
     [Parameter] public bool AllowMultiple { get; set; } = false;
     [Parameter] public string AllowedExtensions { get; set; } = "*";
 
@@ -56,7 +56,7 @@
         {
             if (IsExtensionAllowed(file.Name) == false)
             {
-                await OnInvalid.InvokeAsync((ValidationError.InvalidExtension, file.Name));
+                await OnInvalid.InvokeAsync((ValidationErrorEnum.InvalidExtension, file.Name));
                 return;
             }
 

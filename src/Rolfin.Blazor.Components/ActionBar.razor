@@ -1,10 +1,11 @@
-﻿@using Components.Buttons
+﻿<div class="action_bar_container">
 
-<div class="container d-flex flex-row justify-content-between p-0 mb-2 mt-2">
-    <h5>@Title</h5>
-    <div class="d-flex flex-row justify-content-between p-0 action-margin">
+    <span>@Title</span>
+
+    <div class="actions_container">
         @ChildContent
     </div>
+
 </div>
 
 @code {

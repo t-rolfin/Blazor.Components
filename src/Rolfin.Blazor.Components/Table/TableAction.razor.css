@@ -2,10 +2,29 @@
     margin-right: 0px !important;
 }
 
-.table-action{
-    margin:2px;
+.table-action {
+    margin: 2px;
+    border: none;
+    min-height: 20px;
+    min-width: 20px;
 }
 
-.btn{
+.btn {
     padding: 2px 5px;
+}
+
+.btn:hover{
+    cursor: pointer;
+}
+
+.btn-danger {
+    background-color: var(--button-danger-color);
+}
+
+.btn-primary {
+    background-color: var(--button-primary-color);
+}
+
+.btn-warning {
+    background-color: var(--warning-color);
 }

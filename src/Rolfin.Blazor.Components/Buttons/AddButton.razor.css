@@ -1,22 +1,16 @@
 ﻿.btn-add {
     display: flex;
     align-items: center;
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+    color: var(--button-text-color);
+    background-color: var(--button-primary-color);
+    border: none;
     padding: 3px 10px 3px 10px;
-    /*min-width: 150px;*/
     justify-content: space-around;
+    min-width: 30px;
+    min-height: 30px;
 }
 
-.btn-add > span{
-    font-weight: 600;
-}
-
-.btn-add > i{
-    font-weight: 600;
-}
 
 .btn-add:hover {
-    color: #fff;
+    color: var(--button-text-color-hover);
 }
