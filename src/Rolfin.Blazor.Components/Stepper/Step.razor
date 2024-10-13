@@ -1,0 +1,103 @@
+﻿@typeparam T
+    
+@if (this.IsCurrent)
+{
+
+    <div class="step-container">
+
+        @ChildContent
+
+    </div>
+
+}
+
+@code {
+    [CascadingParameter] Stepper<T> Stepper { get; set; }
+    [Parameter] public string Name { get; set; }
+
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+
+    internal StepState State { get; set; } = StepStates.None;
+    internal bool IsLastStep => Stepper.IsLastStep(this);
+    internal bool IsCurrent {get;set;} = false;
+
+    public bool? IsValidStep { get; private set; } = null;
+    public int Position { get; set; }
+
+
+    [Parameter] public Func<bool> OnNext { get; set; } = () => true;
+    [Parameter] public Action OnActivate { get; set; }
+    [Parameter] public EventCallback AfterNext { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        if (Stepper == null) throw new ArgumentNullException(nameof(Stepper), "Step must exist within a Stepper");
+
+        this.Position = Stepper.StepsCount();
+        Stepper.AddStep(this);
+
+        if (this.Position == 1)
+        {
+            IsCurrent = true;
+            State = StepStates.None;
+            Stepper.ActivateStep(this);
+        }
+
+        Stepper.CalculateLineWidth();
+    }
+
+
+    internal void Activate()
+    {
+        if (Stepper.OnlyCurrentStep && IsCurrent == false)
+            return;
+
+        Stepper.ActivateStep(this);
+        Stepper.nextButton?.Refresh();
+    }
+    internal async Task<bool> Next()
+    {
+        IsValidStep = OnNext?.Invoke();
+
+        var currentStepIndex = Stepper.GetStepIndexByPosition(this.Position);
+
+        Stepper.GetStepAt(currentStepIndex).State = GetStatus();
+
+        if (Stepper.NextOnFail == false && IsValidStep == false) return false;
+
+        if(IsLastStep is false)
+        {
+            var nextStep = Stepper.GetStepAt(currentStepIndex + 1);
+            Stepper.ActivateStep(nextStep);
+        }
+
+        await AfterNext.InvokeAsync();
+
+        if(IsLastStep && IsValidStep is true)
+            await this.Stepper.OnSubmit.InvokeAsync();
+
+        return IsValidStep.HasValue && IsValidStep.Value;
+    }
+    internal void ValidateNext()
+    {
+        IsValidStep = OnNext?.Invoke();
+
+        if (IsValidStep is false)
+            State = StepStates.Invalid;
+        else
+            State = StepStates.Valid;
+
+        //await AfterNext.InvokeAsync();
+    }
+    internal StepState GetStatus()
+    {
+        if (IsValidStep == null) return StepStates.Valid;
+
+        return IsValidStep == true
+            ? StepStates.Valid
+            : StepStates.Invalid;
+    }
+}

@@ -1,0 +1,74 @@
+﻿@inject IJSRuntime js
+
+<InputFile style="display: none" @ref=inputFileRef @attributes=InputAttributes 
+         OnChange=LoadImage></InputFile>
+
+<div class="drop-area">
+    <div class="clean-image" @onclick=ClearImage>
+        <span class="bi bi-x-lg me-1"></span>
+    </div>
+    <div class="inner-drop" @onclick=OpenDialog >
+        @if(string.IsNullOrWhiteSpace(Base64Image) == false)
+        {
+            <img class="up-image" src=@Base64Image />
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public byte[] Value { get; set; }
+    [Parameter] public EventCallback<byte[]> ValueChanged { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object> InputAttributes { get; set; }
+
+    private static string imagePrefix = "data:image/jpeg;base64, ";
+    private string Base64Image = string.Empty;
+
+    private InputFile inputFileRef;
+    IJSObjectReference JsObjectRef { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+        => JsObjectRef = await js.InvokeAsync<IJSObjectReference>("import", 
+        "./_content/Rolfin.Blazor.Components/rolfin.scripts.js");
+
+    protected override void OnInitialized()
+    {
+        if (Value == null)
+            return;
+
+        Base64Image = $"{imagePrefix}{ Convert.ToBase64String(Value)}";
+    }
+
+    private async Task OpenDialog()
+    {
+        var id = InputAttributes.FirstOrDefault(x => x.Key == "id").Value;
+
+        if (id is null)
+            throw new ArgumentException();
+
+
+        await JsObjectRef.InvokeVoidAsync("SimulateClick", $"#{id}");
+    }
+
+    private async Task LoadImage(InputFileChangeEventArgs e)
+    {
+        if (e.File == null)
+            return;
+
+        using var stream = e.File.OpenReadStream(2000000);
+        using var memoryStream = new MemoryStream();
+        await stream.CopyToAsync(memoryStream);
+        Value = memoryStream.ToArray();
+
+        Base64Image = $"{imagePrefix}{ Convert.ToBase64String(Value)}";
+
+        await ValueChanged.InvokeAsync(Value);
+    }
+
+    private async Task ClearImage()
+    {
+        Value = null;
+        Base64Image = string.Empty;
+        await ValueChanged.InvokeAsync(null);
+    }
+}

@@ -1,0 +1,86 @@
+﻿.notifications-wrapper
+{
+    position: fixed;
+    width: 300px;
+    height: auto;
+    z-index: 999;
+}
+
+.notification-container
+{
+    width: auto;
+    height: auto;
+    background-color: white;
+    border: 1px solid rgba(0,0,0,0.3);
+    margin: 10px;
+}
+
+.notification-title 
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-size: 1.1rem;
+    text-transform: capitalize;
+    padding: 0 5px;
+}
+
+.notification-close
+{
+    color: white;
+    font-size: 1.5rem;
+}
+
+.notification-close:hover{
+    cursor: pointer;
+}
+
+.notification-body
+{
+    padding: 5px;
+    font-size: 1rem;
+}
+
+
+.fail {
+    background-color: #fa5555;
+}
+
+.success {
+    background-color: #3bc469;
+}
+
+.standard {
+    background-color: #1b6ec2;
+}
+
+.warning {
+    background-color: #ffcc00;
+    color: black;
+}
+
+.warning .notification-close{
+    color: red;
+}
+
+.top-right {
+    top: 0px;
+    right: 0px;
+}
+
+.bottom-right{
+    bottom: 0px;
+    right: 0px;
+}
+
+.top-left{
+    top: 0;
+    left: 0;
+}
+
+.bottom-left{
+    bottom: 0;
+    left: 0;
+}

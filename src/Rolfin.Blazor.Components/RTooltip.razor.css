@@ -1,0 +1,130 @@
+﻿.popover-wrapper
+{
+    position: relative;
+    padding: 0;
+    margin: 0px;
+    display: inherit;
+    width: fit-content;
+}
+
+.rpopover {
+    position: absolute;
+    z-index: 2;
+    margin: 0 auto;
+    display: none;
+    /*background-color: #fcde9f;*/
+    background-color: white;
+    font-size: .9rem;
+}
+
+.top-center {
+    transform: translate(-37%, calc(-100% - 10px));
+}
+
+.top-left {
+    transform: translate(0%, calc(-100% - 10px));
+}
+
+.top-right {
+    transform: translate(-74%, calc(-100% - 10px));
+}
+
+.top-right::after{
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    bottom: -5px;
+    background-color: inherit;
+    transform: rotate(45deg);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    border-right: 1px solid rgba(0,0,0,0.1);
+    right: 12.5px;
+    border-top-left-radius: 100%;
+}
+
+.top-left::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    bottom: -5px;
+    background-color: inherit;
+    transform: rotate(45deg);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    border-right: 1px solid rgba(0,0,0,0.1);
+    left: 12.5px;
+    border-top-left-radius: 100%;
+}
+
+.top-center::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    bottom: -5px;
+    background-color: inherit;
+    transform: rotate(45deg);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    border-right: 1px solid rgba(0,0,0,0.1);
+    left: calc(50% - 5px);
+    border-top-left-radius: 100%;
+}
+
+.right {
+    top: 50%;
+    left: calc(100% + 10px);
+    transform: translate(4px,-50%);
+}
+
+.right::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: inherit;
+    transform: rotate(45deg);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    border-right: 1px solid rgba(0,0,0,0.1);
+    left: -5px;
+    top: 50%;
+    transform: translate(1px,-50%) rotate(135deg);
+    border-top-left-radius: 100%;
+}
+
+.left {
+    top: 50%;
+    right: calc(100% + 10px);
+    transform: translate(-4px,-50%);
+}
+
+.left::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: inherit;
+    transform: rotate(45deg);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    border-right: 1px solid rgba(0,0,0,0.1);
+    right: -5px;
+    top: 50%;
+    transform: translate(-1px,-50%) rotate(-45deg);
+    border-top-left-radius: 100%;
+}
+
+.rpopover p {
+    max-width: 250px;
+    min-width: 135px;
+    border: 1px solid rgba(0,0,0,0.1);
+    text-align: center;
+    word-wrap: break-word;
+    padding: 2px 3px;
+    margin: 0px;
+    background-color: inherit;
+}
+
+.show-popover {
+    display: inline !important;
+}
+

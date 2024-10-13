@@ -1,0 +1,10 @@
+﻿<RTooltip Text=@Message Position=@Position>
+    <div class="info-container">
+        <span class="bi bi-info-lg"></span>
+    </div>
+</RTooltip>
+
+@code {
+    [Parameter] public string Message { get; set; }
+    [Parameter] public string Position { get; set; }
+}

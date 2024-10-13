@@ -1,0 +1,28 @@
+﻿@inject ILoadingService service 
+
+<div class="loading-wrapper @showClass">
+    <div id="preloader">
+        <div id="loader"></div>
+    </div>
+</div>
+
+@code {
+    private string showClass { get; set; }
+
+    protected override void OnInitialized()
+    {
+        service.SetShowLoader(() => ShowLoader());
+        service.SetHideLoader(() => HideLoader());
+    }
+
+    private void ShowLoader(){
+        showClass = "show-loader";
+        StateHasChanged();
+    }
+
+    private void HideLoader(){
+        showClass = string.Empty;
+        StateHasChanged();
+    }
+
+}

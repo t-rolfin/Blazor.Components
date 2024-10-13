@@ -1,0 +1,115 @@
+﻿@attribute [CascadingTypeParameter(nameof(T))]
+@typeparam T
+
+@using Rolfin.Blazor.Components
+
+<div class="stapper-container">
+
+    <CascadingValue Value="@this" IsFixed=true>
+
+        <div class="stepper-nav">
+
+            @foreach(var step in _steps)
+            {
+                var tooltipPosition = step.Position == 1 ? "top-left" : step.Position == _steps.Count ? "top-right" : "top-center";
+
+                <RTooltip Text=@step.Name Position=@tooltipPosition>
+                    <div class="step-bubble @(step.IsCurrent ? "active" : step.State.BgColor)" onclick=@(() => step.Activate())>
+                        <span class="@step.State.Icon">@(step.State.State == "none" ? step.Position.ToString() : "")</span>
+                    </div>
+                </RTooltip>
+                
+                if(_steps.Last().Position != step.Position)
+                {   
+                    <div class="step-line" style="width: @stepLineWidth%"></div>
+                }
+
+            }
+        </div>
+
+        <div class="step-content">
+
+            <EditForm Model=@Model>
+
+                <FluentFormValidator T="T" @ref=Validator />
+
+                @Steps
+
+            </EditForm>
+
+        </div>
+
+        <div class="step-actions">
+
+            @Actions
+
+        </div>
+
+    </CascadingValue>
+
+</div>
+
+@code {
+    private List<Step<T>> _steps { get; set; } = new();
+
+    [Parameter] public RenderFragment Steps { get; set; }
+    [Parameter] public RenderFragment Actions { get; set; }
+
+    [Parameter] public T Model { get; set; }
+
+    [Parameter] public bool OnlyCurrentStep { get; set; } = false;
+    [Parameter] public bool NextOnFail { get; set; } = false;
+
+
+    [Parameter] public EventCallback OnSubmit { get; set; }
+
+    public bool IsValid { get; set; } = true;
+
+    internal Step<T> CurrentStep { get; set; }
+    internal StepperNextAction<T> nextButton { get; set; }
+
+    FluentFormValidator<T> Validator { get; set; }
+    int stepLineWidth { get; set; }
+
+
+    public bool ValidateFields(ValidationStrategy<T> strategy) => this.Validator.Validate(strategy);
+    public bool ValidateFields(T model, Action<IValidationBuilder<T>> validationBuilder)
+        => this.Validator.Validate(ValidationStrategy.Create(model, validationBuilder));
+
+    public async Task Next()
+    {
+        IsValid = await CurrentStep.Next();
+        StateHasChanged();
+    }
+    public bool ValidateSteps()
+    {
+        foreach (var step in _steps){
+            step.ValidateNext();
+            IsValid = step.IsValidStep == false ? false : true;
+        }
+
+        return IsValid;
+    }
+
+
+    internal void AddStep(Step<T> step)
+    {
+        _steps.Add(step);
+        StateHasChanged();
+    }
+    internal Step<T> GetStepAt(int index) => _steps.ElementAt(index);
+    internal int GetStepIndexByPosition(int position) => _steps.FindIndex(x => x.Position == position);
+    internal void ActivateStep(Step<T> step)
+    {
+        if (CurrentStep is not null && CurrentStep.Position == step.Position) return;
+        if (CurrentStep is not null) CurrentStep.IsCurrent = false;
+
+        step.IsCurrent = true;
+        CurrentStep = step;
+        CurrentStep.OnActivate?.Invoke();
+        StateHasChanged();
+    }
+    internal void CalculateLineWidth() => stepLineWidth = 100 / _steps.Count;
+    internal bool IsLastStep(Step<T> step) => _steps.Last().Position == step.Position;
+    internal int StepsCount() => _steps.Count() + 1;
+}

@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Rolfin.Blazor.Components": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:58841;http://localhost:58842"
+    }
+  }
+}

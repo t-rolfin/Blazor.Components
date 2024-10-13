@@ -1,0 +1,32 @@
+﻿<div class="switch_case" @onclick=ChangePosition >
+    <div class="switch-inner @boolClass">
+        <div class="swithc-on">
+            @OnText
+        </div>
+        <div class="swithc-off">
+            @OffText
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool _value;
+    private string boolClass;
+
+    [Parameter] public bool Value {
+        get => _value; 
+        set { _value = value; boolClass = _value ? "on" : "off"; } 
+    }
+
+    [Parameter] public string OffText { get; set; } = "OFF";
+    [Parameter] public string OnText { get; set; } = "ON";
+
+    [Parameter] public EventCallback<bool> ValueChanged { get; set; }
+
+    private void ChangePosition()
+    {
+        _value = !_value;
+        boolClass = _value ? "on" : "off";
+        ValueChanged.InvokeAsync(_value);
+    }
+}

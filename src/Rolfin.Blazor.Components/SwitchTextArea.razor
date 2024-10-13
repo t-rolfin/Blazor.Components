@@ -1,0 +1,30 @@
+﻿<Switch @bind-Value=@switchValue OffText=@OffText OnText=@OnText />
+
+@if (switchValue)
+{
+    <textarea class="w-100 mt-2" value=@Value placeholder=@Placeholder @onchange=@(e => onValueChanged(e))></textarea>
+}
+
+@code {
+    private bool switchValue { get; set; } = false;
+
+    [Parameter] public string Value { get; set; }
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+
+    [Parameter] public string Placeholder { get; set; }
+    [Parameter] public string OffText { get; set; } = "OFF";
+    [Parameter] public string OnText { get; set; } = "ON";
+
+    protected override Task OnInitializedAsync()
+    {
+        if (string.IsNullOrWhiteSpace(Value) == false)
+            switchValue = true;
+
+        return base.OnInitializedAsync();
+    }
+
+    private async Task onValueChanged(ChangeEventArgs e){
+        if (ValueChanged.HasDelegate)
+            await ValueChanged.InvokeAsync(e.Value.ToString());
+    }
+}

@@ -1,0 +1,135 @@
+﻿.card-container:hover .card-actions {
+    display: flex;
+    justify-content:space-around;
+    align-items: center;
+}
+
+.card-container > a{
+    color: black;
+    text-decoration: none;
+}
+
+.card-actions {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #2f2f2f;
+    height: 40px;
+    display: none;
+    z-index: 100;
+}
+
+.card-actions a {
+    color: white;
+    display: flex;
+    justify-content:space-between;
+    align-content:center;
+    height: 50%;
+}
+
+.card-actions a:hover{
+    color: deepskyblue;
+}
+
+.card {
+    border-radius: 0 !important;
+    height: 200px;
+    display: block;
+    top: 0px;
+    position: relative;
+    /*background-color: #f2f8f9;*/
+    text-decoration: none;
+    z-index: 0;
+    /*overflow: hidden;*/
+    /*border: 1px solid #f2f8f9;*/
+    border: 1px solid #cccccc;
+}
+
+.card:hover {
+    transition: all 0.2s ease-out;
+    box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
+    top: -4px;
+    border: 1px solid #cccccc;
+    background-color: white;
+  }
+
+.position-marker {
+    position: absolute;
+    z-index: -1;
+    top: 0px;
+    right: 0px;
+    background: #1b6ec2;
+    height: 16px;
+    width: 16px;
+    border-radius: 32px !important;
+    transform: scale(2);
+    transform-origin: 50% 50%;
+    transition: transform 0.15s ease-out;
+    color: white;
+    font-size: .6rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card:hover .position-marker {
+    transform: scale(2.15);
+}
+
+.marker-content{
+    /*position:absolute;
+    left: 5px;
+    bottom: 2.5px;
+    width: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;*/
+}
+
+.wrapper {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
+    color: #444;
+    max-height: calc(100vh - 185px);
+    overflow: auto;
+    padding: 10px;
+    padding-top: 20px;
+}
+
+.footer {
+    position: absolute;
+    width: 100%;
+    height: 40px;
+    background-color: #f7f7f7;
+    bottom: 0px;
+    border: none;
+    display: flex;
+    align-items: center;
+}
+
+.footer > p{
+    padding-left: 10px;
+    color: #1b6ec2;
+    margin: 0;
+}
+
+.image-container {
+    height: calc(100% - 40px);
+    overflow: hidden;
+    justify-content: center;
+    display: flex;
+    padding: 30px;
+    opacity: .5;
+}
+
+.search-container {
+    background-color: #f0f0f0;
+    padding: 5px;
+}
+
+.search-container > input{
+    border: 1px solid #cccccc;
+    width: 25%;
+    min-width: 200px;
+}

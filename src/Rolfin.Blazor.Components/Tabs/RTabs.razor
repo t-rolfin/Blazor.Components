@@ -1,0 +1,50 @@
+﻿<CascadingValue Value="this" Name="_tab">
+
+    @if(_tabs.Any() is false)
+    {
+
+    }
+    else
+    {
+        <div class="tabs-header">
+                @foreach (var tab in _tabs)
+                {
+                    <div class="tab-header @(_currentTab.Id == tab.Id ? "active": "")" @onclick=@(() => ChangeTab(tab))>@tab.Name</div>
+                }
+        </div>
+        <div class="tabs-content" >
+            @_currentTab.ChildContent
+        </div>
+    }
+
+    @ChildContent
+
+</CascadingValue>
+
+@code {
+    List<RTab> _tabs = new();
+    RTab _currentTab = null;
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    protected override void OnInitialized()
+    {
+        _currentTab = _tabs.FirstOrDefault();
+        base.OnInitialized();
+    }
+
+    internal void AddTab(RTab tab)
+    {
+        if (_tabs.Any() == false)
+            _currentTab = tab;
+
+        _tabs.Add(tab);
+        StateHasChanged();
+    }
+
+    void ChangeTab(RTab tab)
+    {
+        _currentTab = tab;
+        StateHasChanged();
+    }
+}

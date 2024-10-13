@@ -1,0 +1,32 @@
+﻿
+<CascadingValue Value=this>
+
+    <div class="breadcrumb-container">
+        @foreach(var item in Items)
+        {
+            <a class="breadcrumb-anchor" href="@item.Url" >
+                @if(string.IsNullOrWhiteSpace(item.IconCss) == false){
+                    <i class="@item.IconCss"></i>
+                }
+                <span>@item.Text</span>
+            </a>
+
+            @if(item.Text != Items.Last().Text){
+                <span class="bi bi-slash-lg ms-1 me-1"></span>
+            }
+        }
+    </div>
+
+    @ChildContent
+</CascadingValue>
+
+@code {
+    public List<RBreadcrumbItem> Items { get; set; } = new();
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    public void AddItem(RBreadcrumbItem item)
+    {
+        Items.Add(item);
+        StateHasChanged();
+    }
+}

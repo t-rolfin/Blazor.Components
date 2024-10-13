@@ -1,0 +1,112 @@
+﻿@typeparam T
+
+<div class="dialog-wrapper @showClass">
+    <div class="dialog-container" >
+
+        <div class="dialog-header" >
+            <span> @Title </span>
+            <span style="color: red; font-size: 2rem" class="bi bi-x dialog-close" @onclick=CloseDialog></span>
+        </div>
+
+        <div class="dialog-body">
+            @Body(Data)
+        </div>
+
+        @if(Footer is not null){
+            <div class="dialog-footer">
+                @Footer(Data)
+            </div>
+        }
+
+    </div>
+</div>
+    
+
+@*style="top: @(position.OffsetY)px; left: @(position.OffsetX)px;"*@
+@*draggable="true" @ondragend="OnDragEnd" @ondragstart="OnDragStart"*@
+
+@code {
+    private readonly static string cssClass = "show";
+
+    public Guid DialogId = Guid.NewGuid();
+
+    public T Data { get; set; } = default(T);
+
+    [Parameter] public string Title { get; set; } = "Dialog";
+
+    [Parameter] public RenderFragment<T> Body { get; set; }
+    [Parameter] public RenderFragment<T> Footer { get; set; }
+
+    [Parameter] public EventCallback onClose{ get; set; }
+    [Parameter] public EventCallback onOpen{ get; set; }
+
+    private bool display { get; set; }
+    private string showClass { get; set; } = string.Empty;
+    private Position position { get; set; } = new(0d, 0d, 350d, 80d);
+
+    public async Task CloseDialog(){
+        showClass = string.Empty;
+        await onClose.InvokeAsync();
+    }
+
+    public async Task CloseDialog(Guid dialogId)
+    {
+        if(DialogId == dialogId){
+            showClass = string.Empty;
+            await onClose.InvokeAsync();
+        }
+    }
+
+    public async Task<bool> OpenDialog(string title, T data)
+    {
+        Title = title;
+        Data = data;
+
+        showClass = cssClass;
+        position = new(0d, 0d, 350d, 80d);
+
+        await onOpen.InvokeAsync();
+        StateHasChanged();
+        return true;
+    }
+
+    public async Task<bool> OpenDialog()
+    {
+        showClass = cssClass;
+        position = new(0d, 0d, 350d, 80d);
+
+        await onOpen.InvokeAsync();
+
+        return true;
+    }
+
+
+    private void OnDragStart(DragEventArgs args)
+    {
+        position.StartX = args.ClientX;
+        position.StartY = args.ClientY;
+    }
+
+    private void OnDragEnd(DragEventArgs args)
+    {
+        position.OffsetX += args.ClientX - position.StartX;
+        position.OffsetY += args.ClientY - position.StartY;
+    }
+
+    private class Position{
+
+        public Position(double startX, double startY, double offsetX, double offsetY)
+        {
+            StartX = startX;
+            StartY = startY;
+            OffsetX = offsetX;
+            OffsetY = offsetY;
+        }
+
+        public double StartX { get; set; }
+        public double StartY { get; set; }
+        public double OffsetX { get; set; } 
+        public double OffsetY { get; set; }
+    }
+
+}

@@ -1,0 +1,12 @@
+﻿@typeparam T where T : ICard
+
+@code {
+    [CascadingParameter(Name = "Grid")] public CardGrid<T> Grid { get; set; }
+    [Parameter] public string Placeholder { get; set; } = "Search";
+
+    protected override Task OnInitializedAsync()
+    {
+        if (Grid is not null) Grid.SetGridSearch(this);
+        return base.OnInitializedAsync();
+    }
+}

@@ -1,0 +1,15 @@
+﻿<button type="button" class="btn btn-add" 
+    @onclick=@(async () => await onClick.InvokeAsync()) 
+    @attributes=Attributes
+    disabled="@(Disabled?.Invoke())">
+    <i class="bi bi-plus-lg"></i>
+    @*<span>@Text</span>*@
+</button>
+
+@code {
+    [Parameter] public string Text { get; set; }
+    [Parameter] public EventCallback onClick { get; set; }
+    [Parameter] public Dictionary<string, object> Attributes { get; set; }
+    [Parameter] public Func<bool> Disabled { get; set; }
+
+}

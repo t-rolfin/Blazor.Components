@@ -1,0 +1,14 @@
+﻿@code {
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public string Name { get; set; }
+
+    [CascadingParameter(Name = "_tab")] RTabs _tab { get; set; }
+
+    public Guid Id { get; set; } = Guid.NewGuid();
+
+    protected override void OnInitialized()
+    {
+        _tab?.AddTab(this);
+        base.OnInitialized();
+    }
+}

@@ -1,0 +1,88 @@
+﻿@attribute [CascadingTypeParameter(nameof(T))]
+@typeparam T where T : ICard
+
+
+@inject NavigationManager NavigationManager;
+
+
+@if (_gridSearch is not null)
+{
+    <div class="search-container">
+        <input type="text" placeholder="@_gridSearch.Placeholder" @oninput=filterCards />
+    </div>
+}
+
+<div class="wrapper">
+    @foreach (var card in CardsList)
+    {
+        <div class="card p-0 card-container">
+
+            <a href=@card.Link>
+
+                @if (ShowMarker)
+                {
+                    <div class="position-marker">
+                        <span class="marker-content">@card.Position</span>
+                    </div>
+                }
+
+                <div class="image-container">
+                    @if (card.Image != null)
+                    {
+                        <img style="height:100%;" src="@($"data:image/png;base64, {card.Image}")" />
+                    }
+                </div>
+
+                <div class="footer">
+                    <p>
+                        @card.Name
+                    </p>
+                </div>
+            </a>
+            @if (Actions is not null)
+            {
+                <div class="card-actions">
+                    <CascadingValue Value=@card>
+                        @Actions
+                    </CascadingValue>
+                </div>
+            }
+
+        </div>
+    }
+</div>
+
+<CascadingValue Value="this" Name="Grid">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    [Parameter] public RenderFragment Actions { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public List<T> CardsList { get; set; }
+    [Parameter] public bool ShowMarker { get; set; } = false;
+
+    GridSearch<T> _gridSearch { get; set; }
+    List<T> _cardsBackup = new();
+
+    protected override Task OnParametersSetAsync()
+    {
+        _cardsBackup = CardsList;
+        return base.OnParametersSetAsync();
+    }
+
+    internal void SetGridSearch(GridSearch<T> gridSearch)
+    {
+        _gridSearch = gridSearch;
+        StateHasChanged();
+    }
+
+    void filterCards(ChangeEventArgs @event)
+    {
+        if (string.IsNullOrWhiteSpace(@event.Value.ToString()) is true)
+            CardsList = _cardsBackup;
+        else
+            CardsList = _cardsBackup.Where(x => x.Name.ToLower().Contains(@event.Value.ToString().ToLower()))
+                .ToList();
+    }
+}

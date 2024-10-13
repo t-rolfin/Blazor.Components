@@ -1,0 +1,25 @@
+﻿@typeparam T
+
+@if (_stepper.CurrentStep?.IsLastStep == true)
+{
+    <SaveButton Disabled=@(!_stepper.IsValid) onClick=@(async () => await _stepper.Next()) Text=@TextOnLastStep />
+}
+else
+{
+    <NextButton onClick=@(async () => await _stepper.Next()) Text=@Text />
+}
+
+@code {
+    [CascadingParameter] public Stepper<T> _stepper { get; set; }
+
+    [Parameter] public string Text { get; set; }
+    [Parameter] public string TextOnLastStep { get; set; }
+
+    protected override void OnInitialized()
+    {
+        _stepper.nextButton = this;
+        base.OnInitialized();
+    }
+
+    internal void Refresh() => StateHasChanged();
+}

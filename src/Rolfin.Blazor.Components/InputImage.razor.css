@@ -1,0 +1,29 @@
+﻿.drop-area{
+    width: 150px;
+    height: 150px;
+    background-color: lightgray;
+    overflow: hidden;
+    position:relative;
+    z-index:1;
+}
+
+.inner-drop {
+    width: 100%;
+    height: 100%;
+}
+
+.drop-area:hover{
+    cursor: pointer;
+}
+
+.up-image{
+    width: 100%;
+    height: 100%;
+}
+
+.clean-image{
+    position:absolute;
+    right: 0px;
+    color: red;
+    z-index: 2;
+}

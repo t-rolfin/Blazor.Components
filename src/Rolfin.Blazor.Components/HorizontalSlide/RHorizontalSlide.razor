@@ -1,0 +1,27 @@
+﻿<div class="slide-container">
+
+    <div @onclick=slideContent class="slide-header">
+        <span class="element-left" ></span>
+        <span>@Text</span>
+        <span class="element-right" ></span>
+    </div>
+
+    @if (isShow is true)
+    {
+        <div class="slide-body">
+            @ChildContent
+        </div>
+    }
+
+</div>
+
+
+@code {
+    [Parameter] public string Text { get; set; } = "Show more";
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    bool isShow = false;
+
+    void slideContent()
+        => isShow = !isShow;
+}

@@ -1,0 +1,109 @@
+﻿<div class="uploader-container">
+
+    <RDragAndDropArea OnFilesAdded=@AddFiles AllowMultiple="@AllowMultiple" AllowedExtensions=@AllowedExtensions 
+        OnInvalid="@OnInvalid">
+        @ChildContent
+    </RDragAndDropArea>
+
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width:50%">Name</th>
+                    <th style="width:20%">Extension</th>
+                    <th style="width:20%">Size</th>
+                    <th style="width:10%"></th>
+                </tr>
+            </thead>
+            @if (Files is not null)
+            {
+                <tbody>
+                    @foreach (var file in Files?.Where(x => x.FileState != FileState.Removed))
+                    {
+                        <tr>
+                            <th>@file.Name</th>
+                            <th>@file.Extension</th>
+                            <th>@file.SizeAsString</th>
+                            <th style="display: flex; justify-content:center;">
+                                <div class="delete-container">
+                                    <i onclick=@(() => DeleteFile(file.Id)) class="bi bi-trash3"></i>
+                                </div>
+                            </th>
+                        </tr>
+                    }
+                </tbody>
+            }
+        </table>
+        @if (Files is null || Files?.Where(x => x.FileState != FileState.Removed).Count() == 0)
+        {
+            @EmptyListMessage
+        }
+    </div>
+</div>
+
+@code{
+    List<FileDetails> _files = new List<FileDetails>();
+
+    [Parameter] public List<FileDetails> Files {
+        get => _files;
+        set => _files = value is null ? new() : value;
+    }
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public RenderFragment EmptyListMessage { get; set; }
+
+    [Parameter] public bool AllowMultiple { get; set; }
+    [Parameter] public string AllowedExtensions { get; set; }
+
+    [Parameter] public EventCallback<FileDetails> OnFileDeleted { get; set; }
+    [Parameter] public EventCallback<List<FileDetails>> FilesChanged { get; set; }
+
+    [Parameter] public EventCallback<(ValidationError, string)> OnInvalid { get; set; }
+
+    async Task AddFiles(List<FileDetails> files)
+    {
+        if(AllowMultiple is false && Files?.Any(x => x.FileState is not FileState.Removed) is true)
+        {
+            await OnInvalid.InvokeAsync((ValidationError.MultipleFiles, "Multiple files are not allowed."));
+            return;
+        }
+
+        foreach (var file in files)
+        {
+            var alreadyExist = Files?.FirstOrDefault(x => x.Name.Equals(file.Name));
+
+            if(alreadyExist is not null)
+            {
+                if(alreadyExist.FileState != FileState.Added)
+                {
+                    alreadyExist.Content = file.Content;
+                    alreadyExist.Size = file.Size;
+                    alreadyExist.SizeAsString = file.SizeAsString;
+                    alreadyExist.FileState = FileState.Updated;
+                }else
+                {
+                    alreadyExist.Content = file.Content;
+                    alreadyExist.Size = file.Size;
+                    alreadyExist.SizeAsString = file.SizeAsString;
+                }
+
+            }
+            else
+                Files.Add(file);
+        }
+
+        await FilesChanged.InvokeAsync(Files);
+    }
+    async Task DeleteFile(Guid id){
+        var existingFile = Files.FirstOrDefault(x => x.Id == id);
+        if (existingFile is null) return; //show error
+
+        if (existingFile.FileState == FileState.Added)
+            Files.Remove(existingFile);
+        else
+            existingFile.FileState = FileState.Removed;
+
+        await OnFileDeleted.InvokeAsync(existingFile);
+        await FilesChanged.InvokeAsync(Files);
+    }
+}

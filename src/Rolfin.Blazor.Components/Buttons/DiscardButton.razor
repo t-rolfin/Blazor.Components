@@ -1,0 +1,9 @@
+﻿<button type="button" class="btn btn-discard" onclick=@(async () => await onClick.InvokeAsync())>
+    <i class="bi bi-x-lg"></i>
+    <span>@Text</span>
+</button>
+
+@code {
+    [Parameter] public string Text { get; set; }
+    [Parameter] public EventCallback onClick { get; set; }
+}

@@ -1,0 +1,16 @@
+﻿@code {
+    [CascadingParameter] RBreadcrumb breadcrumb { get; set; }
+
+    [Parameter] public string Url { get; set; }
+    [Parameter] public string Text { get; set; }
+    [Parameter] public string IconCss { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (breadcrumb is null)
+            throw new ArgumentNullException();
+
+        breadcrumb.Items ??= new();
+        breadcrumb.AddItem(this);
+    }
+}

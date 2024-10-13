@@ -1,0 +1,33 @@
+﻿.tabs-header
+{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.tab-header {
+    background-color: #1b6ec2;
+    color: white;
+    padding: 7px 10px;
+    margin-right: 5px;
+    margin-bottom: -1px;
+}
+
+.tabs-content {
+    background-color: white;
+    width: 100%;
+    border: 1px solid #e9ecef;
+    padding: 10px;
+}
+
+.tab-header:hover{
+    cursor: pointer;
+}
+
+.active {
+    background-color: white;
+    border-top: 1px solid #e9ecef;
+    border-left: 1px solid #e9ecef;
+    border-right: 1px solid #e9ecef;
+    color: black;
+}

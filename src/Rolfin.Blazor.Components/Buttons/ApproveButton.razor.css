@@ -1,0 +1,22 @@
+﻿.btn-approve {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+    padding: 3px 10px 3px 10px;
+    min-width: 150px;
+    justify-content: space-around;
+}
+
+.btn-approve > span {
+    font-weight: 600;
+}
+
+.btn-approve > i {
+    font-weight: 600;
+}
+
+.btn-approve:hover {
+    color: #fff;
+}

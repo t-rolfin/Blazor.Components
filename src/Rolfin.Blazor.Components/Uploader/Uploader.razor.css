@@ -1,0 +1,45 @@
+﻿.uploader-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.table-container {
+    margin-top: 10px;
+    width: 100%;
+}
+
+.table {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: left;
+    user-select: none;
+}
+
+.delete-container > i {
+    color: red;
+}
+
+    .delete-container > i:hover {
+        cursor: pointer;
+    }
+
+.table > thead > tr > th:last-of-type {
+    text-align: left;
+}
+
+.table > tbody > tr > th {
+    padding: 2.5px 5px 5px 5px;
+    font-weight: 500;
+}
+
+    .table > tbody > tr > th:last-of-type {
+        justify-content: end !important;
+    }
+
+.table > thead > tr > th {
+    border-bottom: 1px solid #dbdaff;
+    padding-bottom: 5px;
+    background-color: #f9f9f9;
+    padding: 10px;
+}

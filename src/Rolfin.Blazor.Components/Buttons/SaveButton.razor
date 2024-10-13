@@ -1,0 +1,18 @@
+﻿@if(Disabled){
+    <button type="submit" disabled form=@FormId class="btn btn-save" @onclick=@(async () => await onClick.InvokeAsync())>
+        <i class="bi bi-save"></i>
+        <span>@Text</span>
+    </button>
+}else{
+    <button type="submit" form=@FormId class="btn btn-save" @onclick=@(async () => await onClick.InvokeAsync())>
+        <i class="bi bi-save"></i>
+        <span>@Text</span>
+    </button>
+}
+
+@code {
+    [Parameter] public string Text { get; set; }
+    [Parameter] public EventCallback onClick { get; set; }
+    [Parameter] public string FormId { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+}

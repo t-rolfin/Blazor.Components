@@ -1,0 +1,19 @@
+﻿.drop-area {
+    height: 150px;
+    width: 100%;
+    background-color: #f9f9f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #dbdaff;
+    user-select: none;
+}
+
+.drop-area:hover{
+    cursor: pointer;
+}
+
+.hover {
+    background-color: #f8f8ff;
+    cursor: pointer;
+}

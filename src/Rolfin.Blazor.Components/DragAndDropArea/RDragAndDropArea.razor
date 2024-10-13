@@ -1,0 +1,82 @@
+﻿@inject IJSRuntime JSRuntime
+@implements IAsyncDisposable
+
+<div @ref="dropZoneElement" class="drop-area">
+    @ChildContent
+    <InputFile id="input_files" OnChange="@OnChange" @ref="inputFile" hidden multiple="@AllowMultiple"
+        accept="@AllowedExtensions" />
+</div>
+
+@code {
+    ElementReference dropZoneElement;
+    InputFile inputFile;
+    List<string> _allowedExtensionArray;
+
+    IJSObjectReference _module;
+    IJSObjectReference _dropZoneInstance;
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    [Parameter] public EventCallback<List<FileDetails>> OnFilesAdded { get; set; }
+    [Parameter] public EventCallback<(ValidationError ValidationError, string FileName)> OnInvalid { get; set; }
+    [Parameter] public bool AllowMultiple { get; set; } = false;
+    [Parameter] public string AllowedExtensions { get; set; } = "*";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender == false) return;
+
+        _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Rolfin.Blazor.Components/rolfin.scripts.js");
+        _dropZoneInstance = await _module.InvokeAsync<IJSObjectReference>("initializeFileDropZone", dropZoneElement, inputFile.Element);
+
+        _allowedExtensionArray = AllowedExtensions != "*"
+            ? AllowedExtensions.Replace(".", "").Split(',').ToList()
+            : null;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_dropZoneInstance != null)
+        {
+            await _dropZoneInstance.InvokeVoidAsync("dispose");
+            await _dropZoneInstance.DisposeAsync();
+        }
+
+        if (_module != null)
+            await _module.DisposeAsync();
+    }
+
+
+    async Task OnChange(InputFileChangeEventArgs e)
+    {
+        var fileDetails = new List<FileDetails>();
+        var files = e.GetMultipleFiles();
+
+        foreach (var file in files)
+        {
+            if (IsExtensionAllowed(file.Name) == false)
+            {
+                await OnInvalid.InvokeAsync((ValidationError.InvalidExtension, file.Name));
+                return;
+            }
+
+            var model = await GetFileDetails(file, FileState.Added);
+            fileDetails.Add(model);
+        }
+
+        await OnFilesAdded.InvokeAsync(fileDetails);
+    }
+    async Task<FileDetails> GetFileDetails(IBrowserFile file, FileState fileState)
+    {
+        using var stream = file.OpenReadStream();
+        using var ms = new MemoryStream();
+        await stream.CopyToAsync(ms);
+
+        var model = new FileDetails(Guid.NewGuid(), file.Name, file.Size, fileState, ms.ToArray());
+
+        return model;
+    }
+
+    bool IsExtensionAllowed(string fileName)
+        => _allowedExtensionArray.Any(x => x.Equals(fileName.Substring(fileName.LastIndexOf(".") + 1)));
+}

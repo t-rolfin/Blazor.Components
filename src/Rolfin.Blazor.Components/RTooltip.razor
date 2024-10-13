@@ -1,0 +1,26 @@
+﻿<div class="popover-wrapper"onmouseenter=@(() => ShowPopover()) onmouseleave=@(() => HidePopover())>
+    @if (string.IsNullOrWhiteSpace(Text) == false){
+        <div class="rpopover @Position @(showPopover ? "show-popover" : "")">
+            <p>@Text</p>
+        </div>
+    }
+
+    @ChildContent
+
+</div>
+@code {
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public string Text { get; set; }
+    [Parameter] public string Position { get; set; } = "top-center";
+
+    private bool showPopover { get; set; } = false;
+
+    private void ShowPopover(){
+        if (showPopover == true) return;
+        showPopover = true;
+    }
+    private void HidePopover(){
+        if (showPopover == false) return;
+        showPopover = false;
+    }
+}

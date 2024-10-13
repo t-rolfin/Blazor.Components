@@ -1,0 +1,246 @@
+﻿<div class="dropdown">
+  <div class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+    @foreach (var item in values.Where(x => x.IsDisplayed))
+    {
+        <span class="badge bg-primary me-1">@item.Value</span>
+    }
+
+    @if(ExtraSelections > 0)
+    {
+        <span class="badge bg-primary me-1">+@ExtraSelections</span>
+    }
+  </div>
+
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+
+      <input style="margin: 5px;width: calc(100% - 10px);" placeholder="Search" @oninput=@((e) => FilterList(e)) />
+
+      <div class="d-flex m-2 justify-content-around">
+          <button onclick=@(() => SelectAll()) class="btn btn-primary">Select All</button>
+          <button onclick=@(() => DeselectAll()) class="btn btn-danger">Deselect All</button>
+      </div>
+
+      <ul class="dropdown-ext">
+          @foreach (var item in values.Where(x => x.IsSearched))
+            {
+                <li>
+                    <label class="dropdown-item ">
+                        <input class="form-check-input" type="checkbox"
+                            checked="@item.IsSelected"
+                            @onchange=@((e) => SetValue(item.Key, bool.Parse(e.Value.ToString()))) />
+                        @item.Value
+                    </label>
+                </li>
+            }
+        </ul>
+  </div>
+
+</div>
+
+
+
+@code {
+    private Dictionary<string, string> _values;
+
+    [Parameter] public string Value { get; set; }
+    [Parameter] public Dictionary<string, string> Values { get => _values; set => ParseElements(value); }
+
+    private List<SelectionValue> values = new();
+    private int ExtraSelections { get; set; }
+    private bool shouldRender = true;
+
+    [Parameter] public EventCallback OnSelect { get; set; }
+    //[Parameter] public EventCallback OnDeselect { get; set; }
+
+    //[Parameter] public EventCallback OnSelectAll { get; set; }
+    //[Parameter] public EventCallback OnDeselectAll { get; set; }
+
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        foreach (var parameter in parameters)
+        {
+            switch (parameter.Name)
+            {
+                case nameof(Value):
+                    Value = parameter.Value?.ToString();
+                    break;
+                case nameof(Values):
+                    var val = parameter.Value as Dictionary<string, string>;
+                    ParseElements(val);
+                    break;
+                case nameof(ValueChanged):
+                    ValueChanged = (EventCallback<string>)parameter.Value;
+                    break;
+                case nameof(OnSelect):
+                    OnSelect = (EventCallback)parameter.Value;
+                    break;
+                default:
+                    throw new ArgumentException($"Unknown parameter: {parameter.Name}");
+            }
+        }
+
+        await base.SetParametersAsync(ParameterView.Empty);
+    }
+
+    protected override bool ShouldRender()
+    {
+        bool render = shouldRender && base.ShouldRender();
+        return render;
+    }
+
+    protected override void OnInitialized()
+    {
+        SetValue(Value);
+    }
+
+
+
+    private void SelectElement(SelectionValue element)
+    {
+        element.SetAsSelectedAndDisplayed(true);
+    }
+
+    private void DeselectElement(SelectionValue element)
+    {
+        element.SetAsSelectedAndDisplayed(false);
+
+        if (element.IsDisplayed && ExtraSelections != 0)
+            DisplayHiddenElements();
+
+        if(element.IsDisplayed == false)
+            ExtraSelections--;
+    }
+
+    private void DisplayHiddenElements()
+    {
+        var hiddenElements = values.Where(x => x.IsSelected && x.IsDisplayed == false);
+        if (hiddenElements.Any() == false) return;
+
+        foreach (var item in hiddenElements)
+            item.IsDisplayed = true;
+        ExtraSelections--;
+    }
+
+    private async Task SetValue(string key, bool isSelected)
+    {
+        var elem = values.First(x => x.Key == key);
+
+        if (elem.IsSelected == isSelected) return;
+
+        if (isSelected)
+        {
+            SelectElement(elem);
+            await OnSelect.InvokeAsync();
+        }
+        else
+        {
+            DeselectElement(elem);
+            //await OnDeselect.InvokeAsync();
+        }
+        Value = GetValue();
+
+        await ValueChanged.InvokeAsync(Value);
+    }
+
+    private void SelectAll()
+    {
+        foreach (var item in values.Where(x => x.IsSelected == false && x.IsSearched).ToList())
+            SelectElement(item);
+
+        //await OnSelectAll.InvokeAsync();
+    }
+
+    private void DeselectAll()
+    {
+        foreach (var item in values.Where(x => x.IsSelected == true))
+            DeselectElement(item);
+
+        ExtraSelections = 0;
+
+        //await OnDeselectAll.InvokeAsync();
+    }
+
+    private void FilterList(ChangeEventArgs args)
+    {
+        if(string.IsNullOrWhiteSpace(args.Value.ToString()))
+        {
+            foreach (var element in values)
+                element.IsSearched = true;
+        }
+        else
+        {
+            foreach (var element in values)
+                if (element.Value.Contains(args.Value.ToString()) == false)
+                    element.IsSearched = false;
+        }
+    }
+
+
+    private string GetValue()
+    {
+        return values
+            .Where(x => x.IsSelected)
+            .Aggregate(new StringBuilder(), (stringBuilder, curent) =>
+            {
+                _ = curent.Key != values.Last(x => x.IsSelected).Key
+                    ? stringBuilder.Append($"{curent.Key}|")
+                    : stringBuilder.Append(curent.Key);
+
+                return stringBuilder;
+            }).ToString();
+    }
+
+    private void SetValue(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return;
+
+        if (value == GetValue()) return;
+
+        var ids = value.Split("|");
+
+        if (values == null && values.Count == 0) return;
+
+        foreach(var id in ids)
+        {
+            var element = values.FirstOrDefault(x => x.Key == id);
+            if (element is null) continue;
+            if (element.IsSelected == false)
+                SelectElement(element);
+        }
+    }
+
+    private void ParseElements(Dictionary<string,string> elements)
+    {
+        if (values.Any() && _values.Any()) return;
+
+        _values = elements;
+
+        foreach (var element in elements)
+            values.Add(new(false, element.Key, element.Value));
+    }
+
+    class SelectionValue
+    {
+        public SelectionValue(bool isSelected, string key, string value )
+        {
+            IsSelected = isSelected;
+            Key = key;
+            Value = value;
+        }
+
+        public bool IsSelected { get; set; }
+        public string Key { get; set; } 
+        public string Value { get; set; } 
+        public bool IsDisplayed { get; set; }
+        public bool IsSearched { get; set; } = true;
+
+
+        public void SetAsSelectedAndDisplayed(bool value)
+        {
+            IsSelected = value;
+            IsDisplayed = value;
+        }
+    }
+}

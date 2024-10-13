@@ -1,0 +1,10 @@
+﻿<button type="button" class="btn btn-approve" @onclick=@(async () => await onClick.InvokeAsync()) @attributes=Attributes >
+    <i class="bi bi-check2"></i>
+    <span>@Text</span>
+</button>
+
+@code {
+    [Parameter] public string Text { get; set; }
+    [Parameter] public EventCallback onClick { get; set; }
+    [Parameter] public Dictionary<string, object> Attributes { get; set; }
+}

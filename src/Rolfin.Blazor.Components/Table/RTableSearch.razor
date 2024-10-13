@@ -1,0 +1,18 @@
+﻿@using System.Linq.Expressions;
+@typeparam ListType
+
+
+@code {
+    [CascadingParameter(Name = "Table")] public RTable<ListType> Table { get; set; }
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public Func<ListType, string, bool> SearchCriteria { get; set; }
+    [Parameter] public string Placeholder { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+        Table.searchSettings = this;
+        return base.OnInitializedAsync();
+    }
+
+}

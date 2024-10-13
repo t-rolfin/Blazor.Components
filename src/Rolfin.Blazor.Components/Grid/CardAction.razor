@@ -1,0 +1,20 @@
+﻿@typeparam T
+
+<span class="action-btn @IconCss" style="color: @IconColor "
+      @onclick=@(async () => await OnClick())></span>
+
+@code {
+    [CascadingParameter] public T Item { get; set; }
+
+    [Parameter] public string IconColor { get; set; } = "white";
+    [Parameter] public string IconCss { get; set; }
+    [Parameter] public EventCallback<string> onClick { get; set; }
+
+    private async Task OnClick(){
+        var IdProperty = typeof(T).GetProperty("Id");
+        if (IdProperty is null) throw new ArgumentNullException();
+        var id = IdProperty.GetValue(Item).ToString();
+
+        await onClick.InvokeAsync(id);
+    }
+}

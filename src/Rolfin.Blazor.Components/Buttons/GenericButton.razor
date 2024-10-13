@@ -1,0 +1,13 @@
+﻿<button type="button" class="btn btn-generic" style="background-color: @BgColor" 
+        @onclick=@(async () => await onClick.InvokeAsync()) @attributes=Attributes>
+    <i class="me-2 @IconCss"></i>
+    <span>@Text</span>
+</button>
+
+@code {
+    [Parameter] public string Text { get; set; }
+    [Parameter] public string BgColor { get; set; }
+    [Parameter] public string IconCss { get; set; }
+    [Parameter] public EventCallback onClick { get; set; }
+    [Parameter] public Dictionary<string, object> Attributes { get; set; }
+}

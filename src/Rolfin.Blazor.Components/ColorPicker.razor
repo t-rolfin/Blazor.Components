@@ -1,0 +1,12 @@
+﻿<input style="width: 30px;padding:0; border: 0" type="color" id="colorpicker" value="@Value" @onchange=@(e => onValueChanged(e))>
+
+@code {
+    [Parameter] public string Value { get; set; }
+
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+
+    private async Task onValueChanged(ChangeEventArgs e)
+    {
+        await ValueChanged.InvokeAsync(e.Value.ToString());
+    }
+}

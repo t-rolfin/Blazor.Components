@@ -1,0 +1,25 @@
+﻿.breadcrumb-container
+{
+    font-size: .8rem;
+    display: flex;
+    flex-direction: row;
+    align-items:center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 40px;
+}
+
+.breadcrumb-container > .breadcrumb-anchor:not(:last-of-type){
+    color: #0079f3;
+    text-decoration: none;
+}
+
+.breadcrumb-container > .breadcrumb-anchor:hover:not(:last-of-type){
+    text-decoration: underline;
+}
+
+.breadcrumb-container > .breadcrumb-anchor:last-of-type {
+    color: black;
+    opacity: .5;
+    text-decoration: none;
+}

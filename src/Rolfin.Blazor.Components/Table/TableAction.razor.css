@@ -1,0 +1,11 @@
+﻿button:not(:last-of-type) {
+    margin-right: 0px !important;
+}
+
+.table-action{
+    margin:2px;
+}
+
+.btn{
+    padding: 2px 5px;
+}

@@ -1,0 +1,35 @@
+﻿@attribute [CascadingTypeParameter(nameof(ListType))]
+@typeparam ListType
+
+@if (Item is null)
+{
+    <th style="width: @Width" >@ColumnName</th>
+}
+else if (ValueMap is not null)
+{
+    var value = ValueMap(Item);
+    <th style="vertical-align:middle" scope="row">@value?.ToString()</th>
+}
+else
+{
+    <th style="vertical-align:middle" scope="row">
+        <CascadingValue Value=@Item>
+            @ChildContent?.Invoke(Item)
+        </CascadingValue>
+    </th>
+}
+
+@code {
+    [CascadingParameter] public ListType Item { get; set; }
+
+    [Parameter] public string ColumnName { get; set; }
+    [Parameter] public string Width { get; set; }
+    [Parameter] public Func<ListType, object> ValueMap { get; set; }
+
+    [Parameter] public RenderFragment<ListType> ChildContent { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+}

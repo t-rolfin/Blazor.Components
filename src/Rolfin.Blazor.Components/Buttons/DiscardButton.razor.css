@@ -1,0 +1,16 @@
+﻿.btn-discard {
+    border: 1px solid #ff6a00;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    color: #ff6a00;
+    padding: 3px 10px 3px 10px;
+    min-width: 150px;
+    justify-content: space-around;
+}
+
+.btn-discard > i {
+    color: #ff6a00;
+    padding-right: 5px;
+    display: flex;
+}

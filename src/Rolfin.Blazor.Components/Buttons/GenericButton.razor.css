@@ -1,0 +1,22 @@
+﻿.btn-generic {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+    padding: 3px 10px 3px 10px;
+    /*min-width: 150px;*/
+    justify-content: space-around;
+}
+
+.btn-generic > span {
+    font-weight: 600;
+}
+
+.btn-generic > i {
+    font-weight: 600;
+}
+
+.btn-generic:hover {
+    color: #fff;
+}

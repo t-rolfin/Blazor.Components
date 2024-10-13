@@ -1,0 +1,29 @@
+﻿@inject INotifyService notify
+
+<div class="notifications-wrapper @Position">
+    @foreach (var notification in notify.Notifications())
+    {
+        <div class="notification-container">
+            <div class="notification-title @notification.NotificationType">
+                <span>@notification.Title</span>
+                <span class="bi bi-x notification-close" @onclick=@(() => ForceClose(notification.Id)) ></span>
+            </div>
+            <div class="notification-body">
+                @notification.Message
+            </div>
+        </div>
+    }
+</div>
+
+@code{
+    [Parameter] public string Position { get; set; } = "top-right";
+
+    protected override void OnInitialized()
+    {
+        notify.UpdateUI(() => Refresh());
+        base.OnInitialized();
+    }
+
+    public void Refresh() => InvokeAsync(() => StateHasChanged());
+    private void ForceClose(Guid id) => notify.ForceClose(id);
+}
