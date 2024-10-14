@@ -1,8 +1,8 @@
 ﻿<button type="submit" form=@FormId class="btn btn-save" @onclick=@(async () => await onClick.InvokeAsync()) 
     disabled="@(Disabled?.Invoke())" @attributes=Attributes >
 
-    @if(string.IsNullOrWhiteSpace(CssIcon)) { <i class="@CssIcon"></i> }
-    @if(string.IsNullOrWhiteSpace(Text)) { <span>@Text</span> }
+    @if(string.IsNullOrWhiteSpace(CssIcon) is false) { <i class="icon @CssIcon"></i> }
+    @if(string.IsNullOrWhiteSpace(Text) is false) { <span>@Text</span> }
 
 </button>
 

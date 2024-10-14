@@ -1,11 +1,14 @@
 ﻿<button type="button" class="btn btn-approve" @onclick=@(async () => await onClick.InvokeAsync()) @attributes=Attributes >
-    <i class="bi bi-check2"></i>
-    <span>@Text</span>
+
+    @if (string.IsNullOrWhiteSpace(CssIcon) is false) { <i class="@CssIcon"></i> }
+    @if (string.IsNullOrWhiteSpace(Text) is false) { <span>@Text</span> }
+
 </button>
 
 @code {
     [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? Attributes { get; set; }
 
+    [Parameter] public string CssIcon { get; set; } = string.Empty;
     [Parameter] public string Text { get; set; } = string.Empty;
     [Parameter] public EventCallback onClick { get; set; }
 }

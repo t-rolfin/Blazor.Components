@@ -20,6 +20,9 @@
     box-sizing: border-box;
 }
 
+.icon{
+    margin-right: 10px;
+}
 
 .btn:hover{
     cursor: pointer;
