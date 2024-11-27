@@ -1,10 +1,12 @@
 ﻿namespace Rolfin.Blazor.Components.Loading;
 
+public delegate Task AsyncAction();
+
 public interface ILoadingService
 {
-    void SetHideLoader(Action action);
-    void SetShowLoader(Action action);
+    void SetHideLoader(AsyncAction action);
+    void SetShowLoader(AsyncAction action);
 
-    void ShowLoader();
-    void HideLoader();
+    Task ShowLoader();
+    Task HideLoader();
 }

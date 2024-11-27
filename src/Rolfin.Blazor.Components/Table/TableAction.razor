@@ -1,25 +1,30 @@
-﻿@typeparam ListType
+﻿@namespace Rolfin.Blazor.Components
+
+@attribute [CascadingTypeParameter(nameof(ListType))]
+@typeparam ListType
 
 <button class="btn btn-@Color table-action" @attributes=Attributes
         @onclick=@(() => onClick()) disabled="@(Disabled?.Invoke(Item))">
+
     <span style="color: white" class="@IconCss"></span>
     <span>@Name</span>
+
 </button>
 
 @code {
-    [CascadingParameter] public ListType Item { get; set; }
+    [CascadingParameter] public ListType? Item { get; set; }
 
-    [Parameter] public Action<string> Action { get; set; }
-    [Parameter] public string Name { get; set; }
-    [Parameter] public string IconCss { get; set; }
+    [Parameter] public Action<string>? Action { get; set; }
+    [Parameter] public string Name { get; set; } = string.Empty;
+    [Parameter] public string IconCss { get; set; } = string.Empty;
     [Parameter] public string Color { get; set; } = "primary";
-    [Parameter] public Dictionary<string, object> Attributes { get; set; }
-    [Parameter] public Func<ListType, bool> Disabled { get; set; }
+    [Parameter] public Dictionary<string, object>? Attributes { get; set; }
+    [Parameter] public Func<ListType, bool> Disabled { get; set; } = (x) => false;
 
     void onClick()
     {
-        var itemId = Item.GetType().GetProperty("Id")
-            .GetValue(Item).ToString();
+        var itemId = Item?.GetType().GetProperty("Id")?
+            .GetValue(Item)?.ToString() ?? string.Empty;
 
         Action?.Invoke(itemId);
     }

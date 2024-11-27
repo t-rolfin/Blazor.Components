@@ -1,14 +1,13 @@
 ﻿:root {
     --main-bg-color: #f1f1f1;
     --border-color: #e9ecef;
-
     --button-primary-color: #1b6ec2;
     --button-text-color: #ffffff;
-    --button-danger-color: #dc3545;
-    --button-danger-border-color: #ff6a00;
-    --button-danger-text-color: #ff6a00;
+    --button-danger-color: #ff7878;
+    --button-valid-color: #21cc31;
+    --button-danger-border-color: #ff7878;
+    --button-danger-text-color: #ff7878;
     --button-text-color-hover: #ffffff;
-
     --warning-color: #fcba03;
     --table-header-color: rgba(0, 0, 0, 0.1);
     --table-row-color: rgba(0, 0, 0, 0.05);
@@ -18,6 +17,7 @@
 
 *{
     box-sizing: border-box;
+    border-radius: 0px;
 }
 
 .spacer{

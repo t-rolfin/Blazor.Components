@@ -1,4 +1,6 @@
-﻿<button type="button" class="btn btn-discard" @attributes=Attributes onclick=@(async () => await onClick.InvokeAsync())>
+﻿@namespace Rolfin.Blazor.Components
+
+<button type="button" class="btn btn-discard" @attributes=Attributes onclick=@(async () => await onClick.InvokeAsync())>
 
     @if (string.IsNullOrWhiteSpace(CssIcon) is false) { <i class="@CssIcon"></i> }
     @if (string.IsNullOrWhiteSpace(Text) is false) { <span>@Text</span> }

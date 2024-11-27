@@ -1,0 +1,70 @@
+﻿@namespace Rolfin.Blazor.Components
+
+@attribute [CascadingTypeParameter(nameof(ListType))]
+@typeparam ListType
+
+<div class="pagination_container">
+
+    @foreach (var pageNumber in _pages)
+    {
+        if (pageNumber.Value == -1)
+        {
+            <span>@pageNumber.Name</span>
+        }
+        else
+        {
+            <span class="page_number_container @(pageNumber.IsActive ? "active_page" : "")" @onclick=@(() => changePage(pageNumber))>@pageNumber.Name</span>
+        }
+    }
+
+</div>
+
+@code {
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter] public int Pages { get; set; }
+    [Parameter] public int CurrentPage { get; set; }
+    [Parameter] public EventCallback<int> OnChange { get; set; }
+
+    List<PageNumber> _pages = new();
+    List<int> _itemsOnPage = new List<int>() { 10, 25, 50, 100 };
+
+    protected override void OnParametersSet()
+    {
+        generate();
+        base.OnParametersSet();
+    }
+
+
+    void changePage(PageNumber pageNumber)
+    {
+        CurrentPage = int.Parse(pageNumber.Name);
+        generate();
+        OnChange.InvokeAsync(CurrentPage);
+    }
+    void generate()
+    {
+        _pages.Clear();
+
+        if (Pages <= 5)
+            for (int i = 0; i < Pages; i++)
+                _pages.Add((i + 1).ToString(), i);
+
+        if (Pages > 5)
+        {
+            int start = CurrentPage - 1 <= 1 ? 1 : CurrentPage - 1;
+            int stop = CurrentPage + 1 > Pages ? Pages : CurrentPage + 1;
+
+            if (start > 1) _pages.Add("1", 0);
+            if (start > 2) _pages.Add("..", -1);
+
+            for (int i = start; i <= stop; i++) _pages.Add(i.ToString(), i-1);
+
+            if (stop < Pages - 1) _pages.Add("..", -1);
+
+            if (stop < Pages) _pages.Add(Pages.ToString(), Pages - 1);
+        }
+
+        if (_pages.Count > 0) _pages.First(x => x.Value == CurrentPage - 1).IsActive = true;
+    }
+}

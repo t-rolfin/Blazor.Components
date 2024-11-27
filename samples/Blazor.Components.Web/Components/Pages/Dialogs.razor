@@ -1,0 +1,17 @@
+﻿@page "/dialogs"
+
+@rendermode InteractiveServer
+
+<h3>Dialogs</h3>
+
+<RDialog T="string" @ref=_dialog class="dialog-container new_dialog_class">
+    <Body>
+
+    </Body>
+</RDialog>
+
+<Rolfin.Blazor.Components.Buttons.AddButton Text="Open Dialog" onClick="@(() => _dialog.OpenDialog())" />
+
+@code {
+    RDialog<string>? _dialog;
+}

@@ -1,52 +1,20 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿namespace Rolfin.Blazor.Components;
 
-namespace Rolfin.Blazor.Components.Table;
-
-internal class Column<TItem>
+internal class PageNumber
 {
-    public Column(string columnName, string width, Func<TItem, object> value)
+    public PageNumber(string name, int value, bool isActive = false)
     {
-        ColumnName = columnName;
+        Name = name;
         Value = value;
-        DataType = DataType.Value;
-        Width = width;
+        IsActive = isActive;
     }
 
-    public Column(string columnName, string width, RenderFragment fragment)
-    {
-        ColumnName = columnName;
-        Fragment = fragment;
-        DataType = DataType.Fragment;
-        Width = width;
-    }
-
-    public string ColumnName { get; init; }
-    public string Width { get; set; }
-    public DataType DataType { get; init; }
-    public Func<TItem, object> Value { get; init; }
-    public RenderFragment Fragment { get; init; }
+    public string Name { get; set; } = string.Empty;
+    public int Value { get; set; }
+    public bool IsActive { get; set; }
 }
 
-internal class Row
+internal static class PageNumberExtensions
 {
-    public string Id { get; set; }
-    public List<Cell> Cells { get; set; }
-}
-
-internal class Cell
-{
-    public Cell(object value, DataType dataType)
-    {
-        Value = value;
-        DataType = dataType;
-    }
-
-    public object Value { get; set; }
-    public DataType DataType { get; set; }
-}
-
-internal enum DataType
-{
-    Value,
-    Fragment
+    public static void Add(this List<PageNumber> list, string name, int value) => list.Add(new(name, value));
 }

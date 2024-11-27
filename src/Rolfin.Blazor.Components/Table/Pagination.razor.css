@@ -1,0 +1,18 @@
+﻿.page_number_container {
+    padding: 5px 10px;
+    border: 1px solid var(--border-color);
+    margin: 5px;
+}
+
+.page_number_container:hover {
+    cursor: pointer;
+}
+
+.active_page {
+    background-color: var(--button-primary-color);
+    color: white;
+}
+
+.pagination_container{
+    user-select: none;
+}

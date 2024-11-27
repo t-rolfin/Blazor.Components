@@ -1,0 +1,16 @@
+﻿@namespace Rolfin.Blazor.Components
+
+@attribute [CascadingTypeParameter(nameof(ListType))]
+@typeparam ListType
+
+@code {
+    [CascadingParameter(Name = "Table")] public Table<ListType>? Table { get; set; }
+
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (Table is null) throw new ArgumentNullException();
+        base.OnInitialized();
+    }
+}

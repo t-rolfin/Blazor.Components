@@ -37,11 +37,8 @@
     display: block;
     top: 0px;
     position: relative;
-    /*background-color: #f2f8f9;*/
     text-decoration: none;
     z-index: 0;
-    /*overflow: hidden;*/
-    /*border: 1px solid #f2f8f9;*/
     border: 1px solid #cccccc;
 }
 
@@ -77,13 +74,7 @@
 }
 
 .marker-content{
-    /*position:absolute;
-    left: 5px;
-    bottom: 2.5px;
-    width: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;*/
+
 }
 
 .wrapper {

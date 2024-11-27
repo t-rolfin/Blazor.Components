@@ -1,9 +1,12 @@
 using Blazor.Components.Web.Components;
+using Rolfin.Blazor.Components.Loading;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddScoped<ILoadingService, LoadingService>();
 
 var app = builder.Build();
 

@@ -1,7 +1,8 @@
 ﻿@typeparam T
 
-<div class="dialog-wrapper @showClass">
-    <div class="dialog-container" >
+<div class="dialog-wrapper @showClass" >
+
+    <div class="dialog-container" @attributes=Attributes>
 
         <div class="dialog-header" >
             <span> @Title </span>
@@ -9,7 +10,7 @@
         </div>
 
         <div class="dialog-body">
-            @Body(Data)
+            @Body?(Data)
         </div>
 
         @if(Footer is not null){
@@ -19,6 +20,7 @@
         }
 
     </div>
+
 </div>
     
 
@@ -30,12 +32,14 @@
 
     public Guid DialogId = Guid.NewGuid();
 
-    public T Data { get; set; } = default(T);
+    public T Data { get; set; } = default(T)!;
+
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? Attributes { get; set; }
 
     [Parameter] public string Title { get; set; } = "Dialog";
 
-    [Parameter] public RenderFragment<T> Body { get; set; }
-    [Parameter] public RenderFragment<T> Footer { get; set; }
+    [Parameter] public RenderFragment<T>? Body { get; set; }
+    [Parameter] public RenderFragment<T>? Footer { get; set; }
 
     [Parameter] public EventCallback onClose{ get; set; }
     [Parameter] public EventCallback onOpen{ get; set; }

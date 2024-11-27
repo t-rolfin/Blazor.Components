@@ -1,14 +1,21 @@
-﻿@code {
-    [Parameter] public RenderFragment ChildContent { get; set; }
-    [Parameter] public string Name { get; set; }
+﻿@namespace Rolfin.Blazor.Components
 
-    [CascadingParameter(Name = "_tab")] RTabs _tab { get; set; }
+@code {
+    [CascadingParameter(Name = "_tab")] RTabs? _tab { get; set; }
 
-    public Guid Id { get; set; } = Guid.NewGuid();
+
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string Name { get; set; } = string.Empty;
+
+
+    public Guid Id { get; } = Guid.NewGuid();
 
     protected override void OnInitialized()
     {
+        if (_tab is null) throw new ParentNotProvidedException("This component can be used just inside a \"RTabs\" component.");
         _tab?.AddTab(this);
-        base.OnInitialized();
     }
+
+
+    public static RTab Empty => new RTab() { Name = "Empty" };
 }

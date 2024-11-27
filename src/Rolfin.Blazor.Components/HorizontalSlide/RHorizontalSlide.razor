@@ -1,4 +1,6 @@
-﻿<div class="slide-container">
+﻿@namespace Rolfin.Blazor.Components
+
+<div class="slide-container">
 
     <div @onclick=slideContent class="slide-header">
         <span class="element-left" ></span>
@@ -9,7 +11,10 @@
     @if (isShow is true)
     {
         <div class="slide-body">
-            @ChildContent
+
+            @if(ChildContent is not null)
+                @ChildContent
+
         </div>
     }
 
@@ -18,10 +23,9 @@
 
 @code {
     [Parameter] public string Text { get; set; } = "Show more";
-    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
 
     bool isShow = false;
 
-    void slideContent()
-        => isShow = !isShow;
+    void slideContent() => isShow = !isShow;
 }

@@ -1,0 +1,57 @@
+﻿@namespace Rolfin.Blazor.Components
+
+@attribute [CascadingTypeParameter(nameof(ListType))]
+@typeparam ListType
+
+
+<CascadingValue Value=this Name="Table" IsFixed=true>
+
+    @if (_search is not null)
+    {
+        @_search.ChildContent
+    }
+
+    @if (Items == null)
+    {
+        <p>Loadinng...</p>
+    }
+    else
+    {
+        <CascadingValue Value="Items" Name="Items">
+            @ChildContent
+        </CascadingValue>
+
+        if(_footer is not null)
+        {
+            @_footer.ChildContent
+        }
+
+        if (Items.Count == 0)
+        {
+            <div class="">
+                <span class=""></span>
+                <span>@NotFoundText</span>
+            </div>
+        }
+
+        if (_pagination is not null && Items.Count != 0)
+        {
+            @_pagination.ChildContent
+        }
+    }
+
+</CascadingValue>
+
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public RenderFragment? Footer { get; set; }
+
+    [Parameter] public List<ListType> Items { get; set; } = new();
+    [Parameter] public string NotFoundText { get; set; } = "Not elements found!";
+    [Parameter] public string ItemsOnPageText { get; set; } = "Items on page";
+
+    Pagination<ListType>? _pagination { get; set; }
+    Search<ListType>? _search { get; set; }
+    Footer<ListType>? _footer { get; set; }
+}

@@ -1,0 +1,32 @@
+﻿@namespace Rolfin.Blazor.Components
+
+@attribute [CascadingTypeParameter(nameof(ListType))]
+@typeparam ListType
+
+<table>
+
+    <thead>
+        <tr>
+            @ChildContent
+        </tr>
+    </thead>
+
+    @if (Items is not null && Items.Count != 0)
+    {
+        <tbody>
+            @foreach (var item in Items)
+            {
+                <tr>
+                    <CascadingValue Value=@item>
+                        @ChildContent
+                    </CascadingValue>
+                </tr>
+            }
+        </tbody>
+    }
+</table>
+
+@code {
+    [CascadingParameter(Name = "Items")] public List<ListType>? Items { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

@@ -15,14 +15,15 @@
         service.SetHideLoader(() => HideLoader());
     }
 
-    private void ShowLoader(){
+    private async Task ShowLoader(){
         showClass = "show-loader";
-        StateHasChanged();
+        await InvokeAsync(StateHasChanged);
     }
 
-    private void HideLoader(){
+    private async Task HideLoader()
+    {
         showClass = string.Empty;
-        StateHasChanged();
+        await InvokeAsync(StateHasChanged);
     }
 
 }

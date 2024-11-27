@@ -2,14 +2,14 @@
 
 public class LoadingService : ILoadingService
 {
-    private Action _show { get; set; }
-    private Action _hide { get; set; }
+    private AsyncAction _show { get; set; }
+    private AsyncAction _hide { get; set; }
 
 
-    public void SetShowLoader(Action action) => _show = action;
-    public void SetHideLoader(Action action) => _hide = action;
+    public void SetShowLoader(AsyncAction action) => _show = action;
+    public void SetHideLoader(AsyncAction action) => _hide = action;
 
 
-    public void ShowLoader() => _show.Invoke();
-    public void HideLoader() => _hide.Invoke();
+    public async Task ShowLoader() => await _show.Invoke();
+    public async Task HideLoader() => await _hide.Invoke();
 }

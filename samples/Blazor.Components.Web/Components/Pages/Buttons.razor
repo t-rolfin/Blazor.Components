@@ -1,6 +1,8 @@
 ﻿@page "/buttons"
 
-@using Rolfin.Blazor.Components.Buttons
+@rendermode InteractiveServer
+
+@using Rolfin.Blazor.Components.Loading
 
 <ActionBar Title="Buttons" />
 
@@ -14,8 +16,28 @@
     <span style="width: 20px;"></span>
     <ApproveButton Text="Approve" />
 
+    <span style="width: 20px;"></span>
+
+    <EditForm Model="model" OnValidSubmit="Submit" >
+        <Switch @bind-Value=model.IsOk />
+        <button type="submit" >Send</button>
+    </EditForm>
+
 </div>
 
-@code {
 
+<Info Position="right" Message="Here I'm!!" />
+@code {
+    TestForm model = new();
+
+
+    void Submit()
+    {
+
+    }
+
+    class TestForm
+    {
+        public bool IsOk { get; set; } = true;
+    }
 }

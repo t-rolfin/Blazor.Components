@@ -1,32 +1,41 @@
 ﻿<div class="switch_case" @onclick=ChangePosition >
+
     <div class="switch-inner @boolClass">
+
         <div class="swithc-on">
-            @OnText
+            <p>@OnText</p>
         </div>
+
         <div class="swithc-off">
-            @OffText
+            <p>@OffText</p>
         </div>
+
     </div>
+
 </div>
 
 @code {
-    private bool _value;
-    private string boolClass;
+    private string? boolClass;
 
-    [Parameter] public bool Value {
-        get => _value; 
-        set { _value = value; boolClass = _value ? "on" : "off"; } 
-    }
+    [Parameter] public bool Value { get; set; }
 
-    [Parameter] public string OffText { get; set; } = "OFF";
-    [Parameter] public string OnText { get; set; } = "ON";
+    [Parameter] public string OffText { get; set; } = string.Empty;
+    [Parameter] public string OnText { get; set; } = string.Empty;
 
     [Parameter] public EventCallback<bool> ValueChanged { get; set; }
 
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        var param = parameters.TryGetValue<bool>("Value", out bool val);
+        boolClass = val ? "on" : "off";
+
+        return base.SetParametersAsync(parameters);
+    }
+
     private void ChangePosition()
     {
-        _value = !_value;
-        boolClass = _value ? "on" : "off";
-        ValueChanged.InvokeAsync(_value);
+        Value = !Value;
+        boolClass = Value ? "on" : "off";
+        ValueChanged.InvokeAsync(Value);
     }
 }

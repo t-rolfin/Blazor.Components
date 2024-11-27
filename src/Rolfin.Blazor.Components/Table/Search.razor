@@ -1,0 +1,39 @@
+﻿@namespace Rolfin.Blazor.Components
+
+@using System.Linq.Expressions;
+
+@attribute [CascadingTypeParameter(nameof(ListType))]
+@typeparam ListType
+
+
+<div class="header-container">
+
+    @if (SearchCriteria is not null)
+    {
+        <div class="search-container">
+            <input type="text" @oninput=OnSearch placeholder="@Placeholder" />
+        </div>
+    }
+
+</div>
+
+
+@code {
+    [CascadingParameter(Name = "Table")] public Table<ListType>? Table { get; set; }
+
+    [Parameter] public Func<ListType, string, bool> SearchCriteria { get; set; } = (x, y) => false;
+    [Parameter] public string Placeholder { get; set; } = string.Empty;
+
+    public RenderFragment? ChildContent { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+        if (Table is null) throw new ArgumentNullException("");
+        return base.OnInitializedAsync();
+    }
+
+    void OnSearch(ChangeEventArgs @event)
+    {
+    }
+
+}

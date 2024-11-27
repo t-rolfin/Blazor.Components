@@ -1,33 +1,4 @@
-﻿table {
-    display: table;
-    width: 100%;
-    border-collapse: collapse;
-    caption-side: bottom;
-    vertical-align: top;
-    color: var(--table-text-color);
-    text-align: left;
-}
-
-thead > tr {
-    background-color: var(--table-header-color);
-}
-
-::deep thead > tr > th {
-    padding: 0.5rem 1px !important;
-    font-size: 18px;
-}
-
-tbody > tr:nth-child(odd) {
-    background-color: var(--table-row-color)
-}
-
-::deep tbody > tr > th {
-    padding: 0.5rem 1px !important;
-    vertical-align: middle;
-}
-
-
-
+﻿
 .search-container
 {
     width: 50%;

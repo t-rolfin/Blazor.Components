@@ -1,23 +1,31 @@
 ﻿@page "/tables"
 
-@using Rolfin.Blazor.Components.Table
+@rendermode InteractiveServer
 
 <ActionBar Title="Tables" />
 
-<RTable Values="_rows" >
+<Table Items="_rows" >
 
-    <RTableColumn Width="80px">
-        <TableAction Color="danger" />
-        <TableAction Color="primary" />
-        <TableAction Color="warning" />
-    </RTableColumn>
+    <Search Placeholder="Name" />
 
-    <RTableColumn ColumnName="Name" ValueMap="x => x.Name"/>
-    <RTableColumn ColumnName="Country" ValueMap="x => x.Country"/>
-    <RTableColumn ColumnName="Age" ValueMap="x => x.Age"/>
-    <RTableColumn ColumnName="Birthday" ValueMap="x => x.Birthday"/>
+    <Columns>
 
-</RTable>
+        <Column Width="100px">
+            <TableAction Color="danger" IconCss="bi bi-plus" />
+            <TableAction Color="primary" IconCss="bi bi-x-lg" />
+            <TableAction Color="warning" />
+        </Column>
+
+        <Column ColumnName="Name" ValueMap="x => x.Name" />
+        <Column ColumnName="Country" ValueMap="x => x.Country" />
+        <Column ColumnName="Age" ValueMap="x => x.Age" />
+        <Column ColumnName="Birthday" ValueMap="x => x.Birthday" />
+
+    </Columns>
+
+    <Pagination Pages="100" CurrentPage="2" />
+
+</Table>
 
 @code {
     List<TableRow> _rows = new()

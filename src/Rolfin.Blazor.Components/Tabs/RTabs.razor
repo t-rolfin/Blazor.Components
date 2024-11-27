@@ -1,4 +1,6 @@
-﻿<CascadingValue Value="this" Name="_tab">
+﻿@namespace Rolfin.Blazor.Components
+
+<CascadingValue Value="this" Name="_tab">
 
     @if(_tabs.Any() is true)
     {
@@ -6,14 +8,15 @@
 
                 @foreach (var tab in _tabs)
                 {
-                    <div class="tab-header @(_currentTab.Id == tab.Id ? "active": "")" @onclick=@(() => ChangeTab(tab))>@tab.Name</div>
+                    <div class="tab-header @(_currentTab.Id == tab.Id ? "active-tab": "")" @onclick=@(() => ChangeTab(tab))>@tab.Name</div>
                 }
 
         </div>
 
         <div class="tabs-content" >
 
-            @_currentTab.ChildContent
+            @if (_currentTab?.ChildContent is not null)
+                @_currentTab.ChildContent
 
         </div>
     }
@@ -23,23 +26,21 @@
 </CascadingValue>
 
 @code {
-    List<RTab> _tabs = new();
-    RTab _currentTab = null;
 
-    [Parameter] public RenderFragment ChildContent { get; set; }
+    List<RTab> _tabs = new();
+    RTab _currentTab = RTab.Empty;
+
+    [Parameter] public RenderFragment? ChildContent { get; set; }
 
     protected override void OnInitialized()
     {
-        _currentTab = _tabs.FirstOrDefault();
-        base.OnInitialized();
+        if(_tabs.Any()) _currentTab = _tabs.First();
     }
 
     internal void AddTab(RTab tab)
     {
-        if (_tabs.Any() == false)
-            _currentTab = tab;
-
-        _tabs.Add(tab);
+        if (_tabs.Any() == false) _currentTab = tab;
+        if(_tabs.Any(x => x.Name.Equals(tab.Name)) is false) _tabs.Add(tab);
         StateHasChanged();
     }
 

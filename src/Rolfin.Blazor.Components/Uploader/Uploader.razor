@@ -6,6 +6,7 @@
     </RDragAndDropArea>
 
     <div class="table-container">
+
         <table class="table">
             <thead>
                 <tr>
@@ -15,6 +16,7 @@
                     <th style="width:10%"></th>
                 </tr>
             </thead>
+
             @if (Files is not null)
             {
                 <tbody>
@@ -33,11 +35,14 @@
                     }
                 </tbody>
             }
+
         </table>
+
         @if (Files is null || Files?.Where(x => x.FileState != FileState.Removed).Count() == 0)
         {
             @EmptyListMessage
         }
+
     </div>
 </div>
 

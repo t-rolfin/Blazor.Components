@@ -1,4 +1,6 @@
-﻿<button type="button" class="btn btn-add" @onclick=@(async () => await onClick.InvokeAsync()) 
+﻿@namespace Rolfin.Blazor.Components
+
+<button type="button" class="btn btn-add" @onclick=@(async () => await onClick.InvokeAsync()) 
     @attributes=Attributes disabled="@(Disabled?.Invoke())">
 
     @if (string.IsNullOrWhiteSpace(CssIcon) is false) { <i class="icon @CssIcon"></i> }
