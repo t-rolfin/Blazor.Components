@@ -10,7 +10,8 @@
         </div>
 
         <div class="dialog-body">
-            @Body?(Data)
+            @if (Body is not null)
+                @Body(Data)
         </div>
 
         @if(Footer is not null){
