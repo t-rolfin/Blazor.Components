@@ -1,15 +1,21 @@
-﻿
-<div class="popover-wrapper" onmouseenter=@(() => ShowPopover()) onmouseleave=@(() => HidePopover())>
+﻿<div class="popover-wrapper" onmouseenter=@(() => ShowPopover()) onmouseleave=@(() => HidePopover())>
 
-    @if (string.IsNullOrWhiteSpace(Text) == false){
-        <div class="rpopover @Position @(showPopover ? "show-popover" : "")">
+    @if (string.IsNullOrWhiteSpace(Text) == false)
+    {
+
+        <div class="rpopover @Position @(showPopover ? "show-popover" : "")" onmouseenter=@(() => HidePopover())>
+
             <p>@Text</p>
+
         </div>
+
     }
 
     @ChildContent
 
 </div>
+
+
 @code {
     [Parameter] public RenderFragment? ChildContent { get; set; }
 

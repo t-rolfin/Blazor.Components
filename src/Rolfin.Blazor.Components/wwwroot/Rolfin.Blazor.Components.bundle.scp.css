@@ -15,15 +15,15 @@
 }
 
 
-*{
+* {
     box-sizing: border-box;
     border-radius: 0px;
 }
 
-.spacer{
+.spacer {
     margin-right: 10px;
 }
 
-.btn:hover{
+.btn:hover {
     cursor: pointer;
 }

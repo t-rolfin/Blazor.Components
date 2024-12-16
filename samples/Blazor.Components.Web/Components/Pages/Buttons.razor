@@ -8,10 +8,21 @@
 
 <div style="display: flex; flex-direction: row">
 
-    <AddButton CssIcon="bi bi-plus" Text="Add" />
+    <RTooltip Position="right" Text="Testing this one!! asdgagasd dvaergwerg sdfgvse h rtyhd fgh srtgh dfgh sg f">
+        <AddButton CssIcon="bi bi-plus" />
+    </RTooltip>
 
     <span style="width: 20px;" ></span>
-    <DiscardButton Text="Discard" />
+
+    <RTooltip Position="top-right" Text="Testing this one!! asdgagasd dvaergwerg sdfgvse h rtyhd fgh srtgh dfgh sg fTesting this one!! asdgagasd dvaergwerg sdfgvse h rtyhd fgh srtgh dfgh sg fTesting this one!! asdgagasd dvaergwerg sdfgvse h rtyhd fgh srtgh dfgh sg f">
+        <DiscardButton Text="Discard" />
+    </RTooltip>
+
+    <div style="height: 50px;">
+        <RTooltip Position="bottom-left" Text="Testing this one!! asdgagasd dvaergwerg sdfgvse h rtyhd fgh srtgh dfgh sg fTesting this one!! asdgagasd dvaergwerg sdfgvse h rtyhd fgh srtgh dfgh sg fTesting this one!! asdgagasd dvaergwerg sdfgvse h rtyhd fgh srtgh dfgh sg f">
+            <DiscardButton Text="Discard" />
+        </RTooltip>
+    </div>
 
     <span style="width: 20px;"></span>
     <ApproveButton Text="Approve" />
@@ -25,8 +36,8 @@
 
 </div>
 
-
 <Info Position="right" Message="Here I'm!!" />
+
 @code {
     TestForm model = new();
 

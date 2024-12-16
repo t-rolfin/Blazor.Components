@@ -3,29 +3,71 @@
     position: relative;
     padding: 0;
     margin: 0px;
-    display: inherit;
+    display: flex;
     width: fit-content;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
 }
 
 .rpopover {
     position: absolute;
-    z-index: 2;
+    z-index: 999;
     margin: 0 auto;
     display: none;
     background-color: white;
     font-size: .9rem;
 }
 
-.top-center {
-    transform: translate(-37%, calc(-100% - 10px));
-}
-
-.top-left {
+.top {
     transform: translate(0%, calc(-100% - 10px));
 }
 
+.bottom{
+    top: calc(100% + 10px);
+}
+
+.bottom::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    top: -5px;
+    background-color: inherit;
+    transform: rotate(45deg);
+    border-top: 1px solid rgba(0,0,0,0.1);
+    border-left: 1px solid rgba(0,0,0,0.1);
+    left: calc(50% - 5px);
+    border-bottom-right-radius: 100%;
+}
+
+.bottom-left {
+    top: calc(100% + 10px);
+    transform: translate(-50%, 0);
+}
+
+.bottom-left::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    top: -5px;
+    background-color: inherit;
+    transform: rotate(45deg);
+    border-top: 1px solid rgba(0,0,0,0.1);
+    border-left: 1px solid rgba(0,0,0,0.1);
+    right: calc(25% - 5px);
+    border-bottom-right-radius: 100%;
+}
+
+.top-left {
+    bottom: calc(100% + 10px);
+    transform: translate(-50%, 0);
+}
+
 .top-right {
-    transform: translate(-74%, calc(-100% - 10px));
+    bottom: calc(100% + 10px);
+    transform: translate(50%, 0);
 }
 
 .top-right::after{
@@ -38,7 +80,7 @@
     transform: rotate(45deg);
     border-bottom: 1px solid rgba(0,0,0,0.1);
     border-right: 1px solid rgba(0,0,0,0.1);
-    right: 12.5px;
+    left: calc(25% - 5px);
     border-top-left-radius: 100%;
 }
 
@@ -52,11 +94,11 @@
     transform: rotate(45deg);
     border-bottom: 1px solid rgba(0,0,0,0.1);
     border-right: 1px solid rgba(0,0,0,0.1);
-    left: 12.5px;
+    right: calc(25% - 5px);
     border-top-left-radius: 100%;
 }
 
-.top-center::after {
+.top::after {
     content: "";
     position: absolute;
     width: 10px;
@@ -71,9 +113,7 @@
 }
 
 .right {
-    top: 50%;
     left: calc(100% + 10px);
-    transform: translate(4px,-50%);
 }
 
 .right::after {
@@ -92,9 +132,7 @@
 }
 
 .left {
-    top: 50%;
     right: calc(100% + 10px);
-    transform: translate(-4px,-50%);
 }
 
 .left::after {

@@ -58,3 +58,17 @@ export function initializeFileDropZone(dropZoneElement, inputFile) {
         }
     }
 }
+
+
+window.tooltipHelper = {
+
+    getViewportWidth: function (button) {
+        console.log(button.getBoundingClientRect())
+        return window.innerWidth;
+    },
+
+    getViewportHeight: function (button) {
+        return window.innerHeight;
+    }
+
+};
